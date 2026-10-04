@@ -84,6 +84,8 @@
 # Node-RED logs
 /node-red/conveyor/*.log
 
+/node-red/conveyor/*.backup
+
 
 # ============================================================
 # GENERAL
