@@ -66,8 +66,8 @@
 # Project location: plc/conveyor/
 # ============================================================
 
-# OpenPLC project files are tracked.
-# No OpenPLC-specific exclusions for now.
+# OpenPLC generated build files
+/plc/conveyor/build/
 
 
 # ============================================================
