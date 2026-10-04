@@ -1,0 +1,109 @@
+# ============================================================
+# UNITY
+# Project location: unity/DigitalTwin/
+# ============================================================
+
+/unity/DigitalTwin/[Ll]ibrary/
+/unity/DigitalTwin/[Tt]emp/
+/unity/DigitalTwin/[Oo]bj/
+/unity/DigitalTwin/[Bb]uild/
+/unity/DigitalTwin/[Bb]uilds/
+/unity/DigitalTwin/[Ll]ogs/
+/unity/DigitalTwin/[Uu]ser[Ss]ettings/
+
+/unity/DigitalTwin/[Mm]emoryCaptures/
+/unity/DigitalTwin/[Rr]ecordings/
+
+# Unity / IDE generated folders
+/unity/DigitalTwin/.vs/
+/unity/DigitalTwin/.gradle/
+/unity/DigitalTwin/.consulo/
+/unity/DigitalTwin/[Ee]xported[Oo]bj/
+
+# Unity-generated IDE/project files
+/unity/DigitalTwin/*.csproj
+/unity/DigitalTwin/*.unityproj
+/unity/DigitalTwin/*.sln
+/unity/DigitalTwin/*.suo
+/unity/DigitalTwin/*.tmp
+/unity/DigitalTwin/*.user
+/unity/DigitalTwin/*.userprefs
+/unity/DigitalTwin/*.pidb
+/unity/DigitalTwin/*.booproj
+/unity/DigitalTwin/*.svd
+/unity/DigitalTwin/*.pdb
+/unity/DigitalTwin/*.mdb
+/unity/DigitalTwin/*.opendb
+/unity/DigitalTwin/*.VC.db
+
+# Unity-generated meta files
+/unity/DigitalTwin/*.pidb.meta
+/unity/DigitalTwin/*.pdb.meta
+/unity/DigitalTwin/*.mdb.meta
+
+# Crash information
+/unity/DigitalTwin/sysinfo.txt
+
+# Unity builds
+/unity/DigitalTwin/*.apk
+/unity/DigitalTwin/*.aab
+/unity/DigitalTwin/*.unitypackage
+/unity/DigitalTwin/*.app
+
+# JetBrains Rider generated plugin
+/unity/DigitalTwin/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# Addressables generated data
+/unity/DigitalTwin/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Android temporary assets
+/unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# ============================================================
+# OPENPLC
+# Project location: plc/conveyor/
+# ============================================================
+
+# OpenPLC project files are tracked.
+# No OpenPLC-specific exclusions for now.
+
+
+# ============================================================
+# NODE-RED
+# Project location: node-red/conveyor/
+# ============================================================
+
+# Node-RED dependencies
+/node-red/conveyor/node_modules/
+
+# Node-RED encrypted credentials
+/node-red/conveyor/flows_cred.json
+
+# Node-RED logs
+/node-red/conveyor/*.log
+
+
+# ============================================================
+# GENERAL
+# ============================================================
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vs/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
