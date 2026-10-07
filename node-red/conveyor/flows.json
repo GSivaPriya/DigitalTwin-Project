@@ -8,6 +8,14 @@
         "env": []
     },
     {
+        "id": "5cd55ca858fd3527",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "f8cf27b21adb353a",
         "type": "modbus-client",
         "name": "OpenPLC",
@@ -226,7 +234,7 @@
         "type": "function",
         "z": "ea087883fe7f4ebf",
         "name": "Build Conveyor Status",
-        "func": "msg.payload = {\n    motorRun: msg.payload.coils.motorRun,\n    motorDirection: msg.payload.registers.motorDirection,\n    boxCount: msg.payload.registers.boxCount\n};\n\nreturn msg;",
+        "func": "msg.payload = {\n    machineRunning: msg.payload.coils.motorRun,\n    machineDirection: msg.payload.registers.motorDirection,\n    boxCount: msg.payload.registers.boxCount\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -256,5 +264,171 @@
         "x": 800,
         "y": 320,
         "wires": []
+    },
+    {
+        "id": "ae33e91ff85799dd",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/commands/start",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 140,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "4ce87a5fb2398604",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/commands/stop",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 200,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "d49ca2c487d6d9a6",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/commands/forward",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 230,
+        "y": 260,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "f13f7740f8e53a61",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/commands/reverse",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 230,
+        "y": 320,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "16c6873fef7bf68e",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/sensors/entry",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 380,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "89450c35f9f67087",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/sensors/exit",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 440,
+        "wires": [
+            [
+                "08487d425b14441a"
+            ]
+        ]
+    },
+    {
+        "id": "08487d425b14441a",
+        "type": "function",
+        "z": "5cd55ca858fd3527",
+        "name": "function 3",
+        "func": "const topicMap = {\n    \"factory/conveyor/01/commands/start\": 0,\n    \"factory/conveyor/01/commands/stop\": 1,\n    \"factory/conveyor/01/commands/forward\": 2,\n    \"factory/conveyor/01/commands/reverse\": 3,\n    \"factory/conveyor/01/sensors/entry\": 4,\n    \"factory/conveyor/01/sensors/exit\": 5\n};\n\nconst address = topicMap[msg.topic];\n\nif (address === undefined) {\n    return null;\n}\n\nconst value = typeof msg.payload === \"string\"\n    ? msg.payload.toLowerCase() === \"true\"\n    : Boolean(msg.payload);\n\nmsg.payload = {\n    value: value,\n    fc: 5,\n    unitid: 1,\n    address: address,\n    quantity: 1\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 280,
+        "wires": [
+            [
+                "8ddbce567cbed224"
+            ]
+        ]
+    },
+    {
+        "id": "8ddbce567cbed224",
+        "type": "modbus-flex-write",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "server": "f8cf27b21adb353a",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 550,
+        "y": 380,
+        "wires": [
+            [],
+            []
+        ]
     }
 ]
