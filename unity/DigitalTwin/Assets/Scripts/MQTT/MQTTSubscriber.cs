@@ -8,6 +8,16 @@ public class MQTTSubscriber : MonoBehaviour
 {
     [SerializeField] MQTTClient mqttClient;
 
+    [System.Serializable]
+    public class MachineStatus
+    {
+        public bool machineRunning;
+        public int machineDirection;
+        public int boxCount;
+    }
+
+    public MachineStatus CurrentStatus{get;private set;}
+
     private async void Start()
     {
         // Wait until MQTTClient has connected
@@ -32,14 +42,13 @@ public class MQTTSubscriber : MonoBehaviour
     private Task OnMessageReceived(
         MqttApplicationMessageReceivedEventArgs e)
     {
-        string topic = e.ApplicationMessage.Topic;
-
+        //string topic = e.ApplicationMessage.Topic;
         string payload = Encoding.UTF8.GetString(
             e.ApplicationMessage.PayloadSegment
         );
 
-        Debug.Log($"MQTT Received: {topic} = {payload}");
-
+        CurrentStatus = JsonUtility.FromJson<MachineStatus>(payload);
+        //Debug.Log($"{CurrentStatus.machineRunning},{CurrentStatus.machineDirection},{CurrentStatus.boxCount}");
         return Task.CompletedTask;
     }
 

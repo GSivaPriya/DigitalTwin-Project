@@ -1,10 +1,10 @@
 using System;
-using System.Numerics;
-using Unity.Mathematics;
+using System.Collections;
 using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
 {
+    [SerializeField] MQTTSubscriber mqttSubscriber;
     [SerializeField] Transform spawnPosition;
     [SerializeField] GameObject objectToSpawn;
     [SerializeField] float time;
@@ -12,11 +12,29 @@ public class ObjectSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InvokeRepeating("SpawnObject",time,repeatRate);
+        StartCoroutine(SpawnObjects());
     }
 
     void SpawnObject()
     {
-        Instantiate(objectToSpawn, spawnPosition.position, quaternion.identity);
+        GameObject spawnedObject= Instantiate(objectToSpawn, spawnPosition.position, Quaternion.identity);
+        // spawnedObject.GetComponent<ObjectDriver>().direction=mqttSubscriber.CurrentStatus.machineDirection;
+    }
+
+    IEnumerator SpawnObjects()
+    {
+        while(true)
+        {
+            yield return new WaitUntil(() => 
+            mqttSubscriber.CurrentStatus!=null&&
+            mqttSubscriber.CurrentStatus.machineRunning &&
+            mqttSubscriber.CurrentStatus.machineDirection!=0);
+
+            SpawnObject();
+
+            yield return new WaitForSeconds(repeatRate);
+
+        }
+
     }
 }

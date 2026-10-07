@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ConveyorController : MonoBehaviour
+public class ConveyorControllerCommands : MonoBehaviour
 {
     bool startCommand;
     bool stopCommand;

@@ -213,7 +213,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: f63d574838ccfb44f84acc05fed0af48, type: 3}
+  - {fileID: 2100000, guid: 569592da71bc5094a9c7f459ed4e400a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -294,7 +294,7 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
 --- !u!114 &4841538663186362259
@@ -309,6 +309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0e32564a348f645a51dbd81c22dc98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotoelectricSensor
+  maxDistance: 1
+  boxCount: 0
+  material: {fileID: 2100000, guid: 569592da71bc5094a9c7f459ed4e400a, type: 2}
 --- !u!1 &9207018151298897115
 GameObject:
   m_ObjectHideFlags: 0

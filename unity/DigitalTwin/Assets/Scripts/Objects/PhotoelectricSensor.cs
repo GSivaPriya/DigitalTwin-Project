@@ -5,40 +5,50 @@ public class PhotoelectricSensor : MonoBehaviour
     //[SerializeField] MQTTPublisher mqttPublisher;
     LineRenderer lineRenderer;
     RaycastHit hit;
+    bool boxDetected;
+    [SerializeField] float maxDistance=6f;
+    [SerializeField] int boxCount=0;
+    [SerializeField] Material material;
+    [SerializeField] MQTTPublisher mqttPublisher;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         lineRenderer= GetComponent<LineRenderer>();
+        lineRenderer.material=material;
     }
 
-    // Update is called once per frame
     void Update()
-    {
-        lineRenderer.SetPosition(0,transform.position);
-        
-        // if(Physics.Raycast(transform.position, transform.forward, out hit, 6f))
-        // {
-        //     if(hit.collider.CompareTag("Box"))
-        //     {
-        //         Debug.Log("Box detected");
-        //         //mqttPublisher.PublishCommands("factory/conveyor/01/commands/start",)
-        //         lineRenderer.SetPosition(1,hit.point);
-        //     }
-        //     else
-        //     {
-        //         Vector3 maxEndPoint = transform.position+(transform.forward*6f);
-        //         lineRenderer.SetPosition(1,maxEndPoint);
-        //     }
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 6f))
 {
-    Debug.Log("Hit: " + hit.collider.gameObject.name +
-              " | Tag: " + hit.collider.gameObject.tag);
+    bool detected = Physics.Raycast(transform.position, transform.forward, out hit, maxDistance) &&
+    hit.collider.CompareTag("Box");
 
-    if (hit.collider.CompareTag("Box"))
+    if (detected != boxDetected)
     {
-        Debug.Log("Box detected");
+        boxDetected = detected;
+
+        if (boxDetected)
+        {
+            boxCount++;
+            Debug.Log($"Box detected! Box count:{boxCount}");
+            _= mqttPublisher.PublishCommands("factory/conveyor/01/sensors/entry",boxDetected);
+
+        }
+        else
+        {
+            Debug.Log("Box cleared");
+            _= mqttPublisher.PublishCommands("factory/conveyor/01/sensors/entry",boxDetected);
+        }
+    }
+
+    lineRenderer.SetPosition(0, transform.position);
+
+    if (detected)
+    {
+        lineRenderer.SetPosition(1, hit.point);
+    }
+    else
+    {
+        lineRenderer.SetPosition(1, transform.position + transform.forward * maxDistance);
     }
 }
-        }
 }
