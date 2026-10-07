@@ -83,7 +83,7 @@ The technical knowledge base is based on manufacturer documentation from **mk Te
 
 - **mk Conveyor Technology Catalogue 7.0** — conveyor configurations, GUF-P 2000 specifications, dimensions, drive configurations, components, load and speed information.
 - **GUF-P 2000 Operating & Maintenance Manual** — machine components, maintenance procedures, maintenance intervals, belt/drive maintenance and servicing.
-- **Instructions for Transportation and Tracking of Belt Conveyors** — belt handling, tracking and adjustment procedures.
+
 
 These documents provide the machine-specific technical context for the later RAG and maintenance decision-support phase.
 
