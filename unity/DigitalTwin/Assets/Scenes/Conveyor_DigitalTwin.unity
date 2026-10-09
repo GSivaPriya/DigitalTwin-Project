@@ -1275,7 +1275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9646784d77ba2b240b0dd300fcdf108a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConveyorController
-  mqttPublisher: {fileID: 1931108896}
 --- !u!1 &768682479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,20 +1355,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186772372977886036, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
-      propertyPath: mqttSubsciber
-      value: 
-      objectReference: {fileID: 1967873745}
-    - target: {fileID: 2186772372977886036, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: conveyorID
+      value: CONV_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353830049876768114, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6818745343361068701, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_Name
-      value: Conveyor (1)
+      value: Conveyor-2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1625,8 +1628,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 985001302}
-  - component: {fileID: 985001301}
-  - component: {fileID: 985001300}
   m_Layer: 0
   m_Name: Conveyors
   m_TagString: Untagged
@@ -1634,41 +1635,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &985001300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985001299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e567a8fdb489043a229fa1e509a401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ConveyorBeltPhysics
-  mqttSubscriber: {fileID: 1967873745}
-  conveyorSpeed: 0.55
---- !u!65 &985001301
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985001299}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.60305256, y: 0.5654266, z: 6.0439982}
-  m_Center: {x: -0.03, y: -0.249, z: -2.9950573}
 --- !u!4 &985001302
 Transform:
   m_ObjectHideFlags: 0
@@ -2130,11 +2096,11 @@ RectTransform:
   - {fileID: 74910619}
   m_Father: {fileID: 861336672}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -423.1, y: 169.5}
-  m_SizeDelta: {x: 350, y: 135.2}
-  m_Pivot: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -209.49, y: -3.6400146}
+  m_SizeDelta: {x: 350, y: 135.20001}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1194873387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2519,13 +2485,17 @@ PrefabInstance:
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: conveyorID
+      value: CONV_03
+      objectReference: {fileID: 0}
     - target: {fileID: 6818745343361068701, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_Name
-      value: Conveyor (2)
+      value: Conveyor-3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3248,7 +3218,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dca68b3e4b83cc4f9390f3f0b0d5eb7, type: 2}
+  - {fileID: 2100000, guid: f1b4ed4b94a6f684fb0c22e2510f84ec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3343,7 +3313,7 @@ Transform:
   m_GameObject: {fileID: 2109301492}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.289, y: 1.139, z: 3.256}
+  m_LocalPosition: {x: -0.289, y: 1.139, z: 3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3498,20 +3468,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186772372977886036, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
-      propertyPath: mqttSubsciber
-      value: 
-      objectReference: {fileID: 1967873745}
-    - target: {fileID: 2186772372977886036, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: conveyorID
+      value: CONV_01
+      objectReference: {fileID: 0}
     - target: {fileID: 6818745343361068701, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_Name
-      value: Conveyor
+      value: Conveyor-1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

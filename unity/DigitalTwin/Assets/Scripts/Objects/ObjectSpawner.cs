@@ -18,6 +18,7 @@ public class ObjectSpawner : MonoBehaviour
     void SpawnObject()
     {
         GameObject spawnedObject= Instantiate(objectToSpawn, spawnPosition.position, Quaternion.identity);
+        spawnedObject.gameObject.GetComponent<Rigidbody>().mass = UnityEngine.Random.Range(4.8f,5.2f);
         // spawnedObject.GetComponent<ObjectDriver>().direction=mqttSubscriber.CurrentStatus.machineDirection;
     }
 

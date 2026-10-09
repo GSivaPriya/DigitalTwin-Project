@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PhotoelectricSensor : MonoBehaviour
 {
-    //[SerializeField] MQTTPublisher mqttPublisher;
     LineRenderer lineRenderer;
     RaycastHit hit;
     bool boxDetected;

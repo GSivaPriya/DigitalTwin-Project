@@ -8,7 +8,12 @@ public class ConveyorControllerCommands : MonoBehaviour
     bool forwardCommand;
     bool reverseCommand;
 
-    [SerializeField] MQTTPublisher mqttPublisher;
+    MQTTPublisher mqttPublisher;
+
+    void Start()
+    {
+        mqttPublisher = GameObject.FindFirstObjectByType<MQTTPublisher>();
+    }
     
     public void OnStartClicked()
     {

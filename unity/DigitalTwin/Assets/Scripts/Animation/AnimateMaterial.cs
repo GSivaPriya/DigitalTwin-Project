@@ -5,7 +5,7 @@ public class AnimateMaterial : MonoBehaviour
     private int materialIndex = 7;
     private Material targetMaterial;
     private Vector2 currentOffset = Vector2.zero;
-    public Vector2 scrollSpeed = new Vector2(0.5f,0.0f);
+    private Vector2 scrollSpeed = new Vector2(0.5f,0.0f);
     private int currentDirection;
     [SerializeField] MQTTSubscriber mqttSubscriber;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
