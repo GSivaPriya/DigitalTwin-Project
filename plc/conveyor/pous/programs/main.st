@@ -21,10 +21,13 @@ PROGRAM main
         MotorRun := FALSE;
 
     (* Start only if exactly one direction is selected *)
-    ELSIF StartCommand AND (ForwardCommand XOR ReverseCommand) THEN
+    (*ELSIF StartCommand AND (ForwardCommand XOR ReverseCommand) THEN
+        MotorRun := TRUE;
+    END_IF;*)
+
+    ELSIF StartCommand THEN
         MotorRun := TRUE;
     END_IF;
-
 
     (* =========================================================
        MOTOR DIRECTION
@@ -35,16 +38,16 @@ PROGRAM main
        ========================================================= *)
 
     (* Conflicting direction commands *)
-    IF ForwardCommand AND ReverseCommand THEN
+    (*IF ForwardCommand AND ReverseCommand THEN
         MotorRun := FALSE;
-        MotorDirection := 0;
+        MotorDirection := 0;*)
 
-    ELSIF ForwardCommand THEN
+    (*ELSIF ForwardCommand THEN
         MotorDirection := 1;
 
     ELSIF ReverseCommand THEN
         MotorDirection := -1;
-    END_IF;
+    END_IF;*)
 
 
     (* =========================================================

@@ -5,8 +5,8 @@ public class ConveyorControllerCommands : MonoBehaviour
 {
     bool startCommand;
     bool stopCommand;
-    bool forwardCommand;
-    bool reverseCommand;
+    // bool forwardCommand;
+    // bool reverseCommand;
 
     MQTTPublisher mqttPublisher;
 
@@ -46,39 +46,39 @@ public class ConveyorControllerCommands : MonoBehaviour
         PublishStates();
     }
 
-    public void OnForwardClicked()
-    {
-        _ = HandleForward();
-    }
-    async Task HandleForward()
-    {
-        forwardCommand=!forwardCommand;
-        if(forwardCommand)
-        {
-            reverseCommand=false;
-        }
-        PublishStates();
-    }
-    public void OnReverseClicked()
-    {
-        _ = HandleReverse();
-    }
+    // public void OnForwardClicked()
+    // {
+    //     _ = HandleForward();
+    // }
+    // async Task HandleForward()
+    // {
+    //     forwardCommand=!forwardCommand;
+    //     if(forwardCommand)
+    //     {
+    //         reverseCommand=false;
+    //     }
+    //     PublishStates();
+    // }
+    // public void OnReverseClicked()
+    // {
+    //     _ = HandleReverse();
+    // }
 
-    async Task HandleReverse()
-    {
-        reverseCommand=!reverseCommand;
-        if(reverseCommand)
-        {
-            forwardCommand=false;
-        }
-        PublishStates();
-    }
+    // async Task HandleReverse()
+    // {
+    //     reverseCommand=!reverseCommand;
+    //     if(reverseCommand)
+    //     {
+    //         forwardCommand=false;
+    //     }
+    //     PublishStates();
+    // }
 
     void PublishStates()
     {
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/start", startCommand);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/stop", stopCommand);
-        _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/forward", forwardCommand);
-        _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/reverse", reverseCommand);
+        // _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/forward", forwardCommand);
+        // _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/reverse", reverseCommand);
     }
 }

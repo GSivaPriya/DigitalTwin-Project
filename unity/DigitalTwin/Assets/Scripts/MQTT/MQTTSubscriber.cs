@@ -12,7 +12,7 @@ public class MQTTSubscriber : MonoBehaviour
     public class MachineStatus
     {
         public bool machineRunning;
-        public int machineDirection;
+        // public int machineDirection;
         public int boxCount;
     }
 

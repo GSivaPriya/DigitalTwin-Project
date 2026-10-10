@@ -28,8 +28,7 @@ public class ObjectSpawner : MonoBehaviour
         {
             yield return new WaitUntil(() => 
             mqttSubscriber.CurrentStatus!=null&&
-            mqttSubscriber.CurrentStatus.machineRunning &&
-            mqttSubscriber.CurrentStatus.machineDirection!=0);
+            mqttSubscriber.CurrentStatus.machineRunning); //&&mqttSubscriber.CurrentStatus.machineDirection!=0
 
             SpawnObject();
 

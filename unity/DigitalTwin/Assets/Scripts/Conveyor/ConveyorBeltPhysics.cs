@@ -44,12 +44,12 @@ public class ConveyorBeltPhysics : MonoBehaviour
 
         boxesOnConveyor.RemoveWhere(rb => rb == null);
 
-            int direction = mqttSubscriber.CurrentStatus.machineDirection;
+            //int direction = mqttSubscriber.CurrentStatus.machineDirection;
             foreach(Rigidbody rb in boxesOnConveyor)
             {
                 rb.WakeUp();
                 rb.linearVelocity=new Vector3(rb.linearVelocity.x,rb.linearVelocity.y, 
-                ConveyorSpeed*direction);
+                ConveyorSpeed); //*direction removed 
             }
 
     }

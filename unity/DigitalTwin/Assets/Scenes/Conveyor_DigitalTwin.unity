@@ -304,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &76553861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2729,7 +2729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1691072776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2897,7 +2897,7 @@ MonoBehaviour:
   spawnPosition: {fileID: 27746905}
   objectToSpawn: {fileID: 9191230482217242881, guid: d0e576a6d5b152443917326c0d7284e3, type: 3}
   time: 5
-  repeatRate: 5
+  repeatRate: 3
 --- !u!1 &1931108894
 GameObject:
   m_ObjectHideFlags: 0
