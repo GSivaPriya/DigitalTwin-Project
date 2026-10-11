@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class CurrentModel
@@ -5,21 +6,25 @@ public class CurrentModel
     private readonly float baselineCurrentA;
     private readonly float ratedCurrentA;
     private readonly float noiseStandardDeviationA;
+    private readonly float extraCurrentAtMaxResistanceA;
 
     public CurrentModel(
         float baselineCurrentA = 0.5f,
         float ratedCurrentA = 2.0f,
-        float noiseStandardDeviationA = 0.05f)
+        float noiseStandardDeviationA = 0.05f,
+        float extraCurrentAtMaxResistanceA = 0.8f)
     {
         this.baselineCurrentA = baselineCurrentA;
         this.ratedCurrentA = ratedCurrentA;
         this.noiseStandardDeviationA = noiseStandardDeviationA;
+        this.extraCurrentAtMaxResistanceA = extraCurrentAtMaxResistanceA;
     }
 
     public float CalculateCurrent(
         float conveyorLoad,
         float conveyorMaxLoad,
-        bool isRunning)
+        bool isRunning,
+        float averageBearingResistance)
     {
         if (!isRunning)
             return 0f;
@@ -29,7 +34,9 @@ public class CurrentModel
             : 0f;
 
         float meanCurrent = baselineCurrentA
-            + (ratedCurrentA - baselineCurrentA) * loadRatio;
+            + (ratedCurrentA - baselineCurrentA) * loadRatio
+            + extraCurrentAtMaxResistanceA
+                * Mathf.Clamp01(averageBearingResistance);
 
         float noise = Random.Range(-1f, 1f)
             * noiseStandardDeviationA * Mathf.Sqrt(3f);

@@ -12,7 +12,6 @@ public class MQTTSubscriber : MonoBehaviour
     public class MachineStatus
     {
         public bool machineRunning;
-        // public int machineDirection;
         public int boxCount;
     }
 
@@ -42,13 +41,11 @@ public class MQTTSubscriber : MonoBehaviour
     private Task OnMessageReceived(
         MqttApplicationMessageReceivedEventArgs e)
     {
-        //string topic = e.ApplicationMessage.Topic;
         string payload = Encoding.UTF8.GetString(
             e.ApplicationMessage.PayloadSegment
         );
 
         CurrentStatus = JsonUtility.FromJson<MachineStatus>(payload);
-        //Debug.Log($"{CurrentStatus.machineRunning},{CurrentStatus.machineDirection},{CurrentStatus.boxCount}");
         return Task.CompletedTask;
     }
 

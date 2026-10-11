@@ -6,7 +6,6 @@ public class AnimateMaterial : MonoBehaviour
     private Material targetMaterial;
     private Vector2 currentOffset = Vector2.zero;
     private Vector2 scrollSpeed = new Vector2(0.0f,0.5f);
-    //private int currentDirection;
     [SerializeField] MQTTSubscriber mqttSubscriber;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,9 +28,7 @@ public class AnimateMaterial : MonoBehaviour
         if(!mqttSubscriber.CurrentStatus.machineRunning)
         return;
 
-        
-            //currentDirection=mqttSubscriber.CurrentStatus.machineDirection;
-            currentOffset += scrollSpeed* Time.deltaTime; //*currentDirection removed
+            currentOffset += scrollSpeed* Time.deltaTime;
             targetMaterial.SetTextureOffset("_BaseMap", currentOffset);
         
     }

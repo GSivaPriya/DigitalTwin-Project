@@ -1,56 +1,63 @@
+
 using UnityEngine;
 
 public class TemperatureModel
 {
-    private float bearingTemperaturC;
+    private float bearingTemperatureC;
+
     private readonly float baseTemperatureRiseC;
     private readonly float maxLoadTemperatureRiseC;
+    private readonly float frictionTemperatureRiseC;
     private readonly float thermalTimeConstant;
     private readonly float noiseStandardDeviationC;
+
     public TemperatureModel(
         float initialTemperatureC,
-        float baseTemperatureRiseC=10f,
+        float baseTemperatureRiseC = 10f,
         float maxLoadTemperatureRiseC = 15f,
-        float thermalTimeConstant=300f,
-        float noiseStandardDeviationC=0.3f)
+        float frictionTemperatureRiseC = 10f,
+        float thermalTimeConstant = 300f,
+        float noiseStandardDeviationC = 0.3f)
     {
-        bearingTemperaturC= initialTemperatureC;
+        bearingTemperatureC = initialTemperatureC;
         this.baseTemperatureRiseC = baseTemperatureRiseC;
         this.maxLoadTemperatureRiseC = maxLoadTemperatureRiseC;
-        this. thermalTimeConstant = thermalTimeConstant;
+        this.frictionTemperatureRiseC = frictionTemperatureRiseC;
+        this.thermalTimeConstant = thermalTimeConstant;
         this.noiseStandardDeviationC = noiseStandardDeviationC;
-
     }
 
-    public float CalculateTemperature (
+    public float CalculateTemperature(
         float ambientTemperatureC,
-        float conveyorLoadKg,
-        float maxLoadKg,
+        float loadRatio,
         bool isRunning,
-        float deltaTime
-    )
+        float resistance,
+        float deltaTime)
     {
-        float loadRatio = maxLoadKg >0f ? Mathf.Clamp01(conveyorLoadKg/maxLoadKg) : 0f;
         float equilibriumTemperatureC = ambientTemperatureC;
 
-        if(isRunning)
+        if (isRunning)
         {
-            equilibriumTemperatureC += baseTemperatureRiseC + maxLoadTemperatureRiseC * loadRatio;
+            equilibriumTemperatureC += baseTemperatureRiseC
+                + maxLoadTemperatureRiseC * loadRatio
+                + frictionTemperatureRiseC * resistance;
         }
-        float timeConstant = Mathf.Max(thermalTimeConstant,0.01f);
 
-        //Gradual heating or cooling toward equilibrium
-        float response = 1f - Mathf.Exp(-Mathf.Max(deltaTime,0f)/timeConstant);
+        float timeConstant = Mathf.Max(thermalTimeConstant, 0.01f);
 
-        bearingTemperaturC += (equilibriumTemperatureC - bearingTemperaturC) *response;
+        float response = 1f - Mathf.Exp(
+            -Mathf.Max(deltaTime, 0f) / timeConstant);
 
-        //small measurement noise, scaled by the square root of elapsed time.
+        bearingTemperatureC +=
+            (equilibriumTemperatureC - bearingTemperatureC) * response;
 
-        float noise = RandomGaussian()*noiseStandardDeviationC*Mathf.Sqrt(Mathf.Max(deltaTime,0f));
+        float noise = RandomGaussian()
+            * noiseStandardDeviationC
+            * Mathf.Sqrt(Mathf.Max(deltaTime, 0f));
 
-        bearingTemperaturC += noise;
-        return bearingTemperaturC;
+        bearingTemperatureC += noise;
 
+        return bearingTemperatureC;
     }
 
     private float RandomGaussian()
@@ -58,6 +65,7 @@ public class TemperatureModel
         float u1 = Mathf.Max(Random.value, 0.000001f);
         float u2 = Random.value;
 
-        return Mathf.Sqrt(-2f*Mathf.Log(u1))*Mathf.Cos(2f*Mathf.PI*u2);
+        return Mathf.Sqrt(-2f * Mathf.Log(u1))
+            * Mathf.Cos(2f * Mathf.PI * u2);
     }
 }

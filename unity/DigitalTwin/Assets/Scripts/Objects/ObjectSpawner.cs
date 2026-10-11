@@ -19,7 +19,6 @@ public class ObjectSpawner : MonoBehaviour
     {
         GameObject spawnedObject= Instantiate(objectToSpawn, spawnPosition.position, Quaternion.identity);
         spawnedObject.gameObject.GetComponent<Rigidbody>().mass = UnityEngine.Random.Range(4.8f,5.2f);
-        // spawnedObject.GetComponent<ObjectDriver>().direction=mqttSubscriber.CurrentStatus.machineDirection;
     }
 
     IEnumerator SpawnObjects()
@@ -28,7 +27,7 @@ public class ObjectSpawner : MonoBehaviour
         {
             yield return new WaitUntil(() => 
             mqttSubscriber.CurrentStatus!=null&&
-            mqttSubscriber.CurrentStatus.machineRunning); //&&mqttSubscriber.CurrentStatus.machineDirection!=0
+            mqttSubscriber.CurrentStatus.machineRunning);
 
             SpawnObject();
 

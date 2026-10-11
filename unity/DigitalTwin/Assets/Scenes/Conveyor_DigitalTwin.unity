@@ -965,6 +965,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507494538}
   m_CullTransparentMesh: 1
+--- !u!1 &517156021 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6283764089027293715, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+  m_PrefabInstance: {fileID: 6470136373030655672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &517156025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517156021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51918376260c724ca1977fbb337b4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::RollerIdentity
+  rollerID: ROLLER-1
 --- !u!1 &665874987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,6 +1391,10 @@ PrefabInstance:
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_Name
       value: Conveyor-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2497,6 +2519,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Conveyor-3
       objectReference: {fileID: 0}
+    - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2849,6 +2875,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 440249456590599329, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
   m_PrefabInstance: {fileID: 6470136373030655672}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1794672309 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9160776051101613537, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+  m_PrefabInstance: {fileID: 6470136373030655672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1794672313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794672309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51918376260c724ca1977fbb337b4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::RollerIdentity
+  rollerID: ROLLER-2
 --- !u!1 &1918640182
 GameObject:
   m_ObjectHideFlags: 0
@@ -3218,7 +3262,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f1b4ed4b94a6f684fb0c22e2510f84ec, type: 2}
+  - {fileID: 2100000, guid: 9dca68b3e4b83cc4f9390f3f0b0d5eb7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3312,13 +3356,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109301492}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.289, y: 1.139, z: 3.31}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.289, y: 0.89, z: 3.672}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!54 &2109301495
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3384,7 +3428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.699
+      value: -2.25
       objectReference: {fileID: 0}
     - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3471,9 +3515,49 @@ PrefabInstance:
       propertyPath: mqttSubscriber
       value: 
       objectReference: {fileID: 1967873745}
+    - target: {fileID: 3411945547548639622, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411945547548639622, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411945547548639622, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411945547548639622, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411945547548639622, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533495083630222316, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: bearingID
+      value: BEARING-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577694002224718168, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: bearingID
+      value: BEARING-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: roller1
+      value: 
+      objectReference: {fileID: 517156021}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: roller2
+      value: 
+      objectReference: {fileID: 1794672309}
     - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: conveyorID
       value: CONV_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6699515469286543234, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: bearingID
+      value: BEARING-2
       objectReference: {fileID: 0}
     - target: {fileID: 6818745343361068701, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: mqttSubscriber
@@ -3483,10 +3567,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Conveyor-1
       objectReference: {fileID: 0}
+    - target: {fileID: 8981860429835264109, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0469
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6283764089027293715, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 517156025}
+    - targetCorrespondingSourceObject: {fileID: 9160776051101613537, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1794672313}
   m_SourcePrefab: {fileID: 100100000, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
