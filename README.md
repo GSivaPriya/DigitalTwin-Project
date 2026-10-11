@@ -5,7 +5,7 @@ An industrial digital twin project built around the **mk GUF-P 2000 BC — Indir
 The project combines virtual commissioning, machine condition monitoring and anomaly detection, and AI-assisted maintenance decision support.
 
 ## Project Demonstrations
-* ** Phase 1 Demo (Virtual Commissioning Loop):** [Watch the 3-Minute System Overview on YouTube](https://youtu.be/_7UZAjHnPNI?si=ZMnqjSRlaXk5RJAZ)
+* **Phase 1 Demo (Virtual Commissioning Loop):** [Watch the 3-Minute System Overview on YouTube](https://youtu.be/_7UZAjHnPNI?si=ZMnqjSRlaXk5RJAZ)
 
 ## Project Goals
 
