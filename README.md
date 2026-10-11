@@ -67,11 +67,12 @@ The system is intended as **maintenance decision support**, not direct AI contro
 | **Python** | In-progress | Data processing and ML pipeline |
 | **SCADA / Historian** | In-progress | Machine monitoring and historical telemetry |
 | **Machine Learning** | In-progress | Condition monitoring and anomaly detection |
+| **Unity Sentis** | Planned | Runtime ML inference inside Unity |
 | **ChromaDB** | Planned | Vector database for RAG |
 | **LLM** | Planned | Contextual reasoning over machine data and documentation |
-| **LangGraph / agent framework** | Planned | Agentic investigation and workflow orchestration |
+| **Agent framework** | Planned | Agentic investigation and workflow orchestration |
 | **MCP** | Planned | Standardized tool/context interface for machine and Unity information |
-| **Unity Sentis** | Planned | Runtime ML inference inside Unity |
+
 
 ---
 
