@@ -4,6 +4,9 @@ An industrial digital twin project built around the **mk GUF-P 2000 BC — Indir
 
 The project combines virtual commissioning, machine condition monitoring and anomaly detection, and AI-assisted maintenance decision support.
 
+## Project Demonstrations
+* ** Phase 1 Demo (Virtual Commissioning Loop):** [Watch the 3-Minute System Overview on YouTube](https://youtu.be/_7UZAjHnPNI?si=ZMnqjSRlaXk5RJAZ)
+
 ## Project Goals
 
 The project is developed in three connected phases:
@@ -13,6 +16,7 @@ The project is developed in three connected phases:
 Build a functional virtual representation of the GUF-P 2000 BC conveyor in Unity and establish closed-loop communication with a PLC.
 
 **Goal:** Validate PLC control, machine behaviour, material flow, virtual sensors, and communication before introducing condition monitoring.
+* **Video Demonstration:** For a complete walkthrough of the communication loop between Unity, Node-RED, and OpenPLC, watch the [Phase 1 Virtual Commissioning Demo on YouTube](https://youtu.be/_7UZAjHnPNI?si=gbhBXgLJ2mP35yzt).
 
 ### Phase 2 — Condition Monitoring & Anomaly Detection
 
@@ -60,9 +64,9 @@ The system is intended as **maintenance decision support**, not direct AI contro
 | **Mosquitto MQTT 2.1.2** | Implemented | MQTT broker |
 | **MQTT** | Implemented | Unity ↔ Node-RED messaging |
 | **Modbus TCP** | Implemented | Node-RED ↔ OpenPLC communication |
-| **Python** | Planned | Data processing and ML pipeline |
-| **SCADA / Historian** | Planned | Machine monitoring and historical telemetry |
-| **Machine Learning** | Planned | Condition monitoring and anomaly detection |
+| **Python** | In-progress | Data processing and ML pipeline |
+| **SCADA / Historian** | In-progress | Machine monitoring and historical telemetry |
+| **Machine Learning** | In-progress | Condition monitoring and anomaly detection |
 | **ChromaDB** | Planned | Vector database for RAG |
 | **LLM** | Planned | Contextual reasoning over machine data and documentation |
 | **LangGraph / agent framework** | Planned | Agentic investigation and workflow orchestration |
@@ -117,17 +121,18 @@ DigitalTwin-Project/
 ## Development Flow
 
 ```text
-Phase 1
+Phase 1 [Completed]
 Virtual Commissioning -> Unity + PLC + Sensors + Communication
 
-Phase 2
+Phase 2 [In-Progress]
 Condition Monitoring & Anomaly Detection -> Telemetry + Historian + Machine Learning
 
-Phase 3
+Phase 3 [Planned]
 RAG + LLM + Agentic AI -> Technical Knowledge + Machine Context -> Maintenance Decision Support
 ```
 
-The project is currently focused on completing **Phase 1 — Virtual Commissioning** before progressing to condition monitoring, anomaly detection, and AI-assisted maintenance guidance.
+Current Focus: 
+Having successfully validated the closed-loop Virtual Commissioning pipeline in Phase 1, the project is actively executing Phase 2. Current engineering tasks focus on rewriting PLC control blocks to accommodate synthetic bearing degradation data, building out the industrial tag framework in Ignition SCADA, and routing historical telemetry to an SQL database for offline machine learning model training.
 
 ---
 
