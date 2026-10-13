@@ -33,14 +33,23 @@
         "main": [
           "StartCommand",
           "StopCommand",
-          "ForwardCommand",
-          "ReverseCommand",
           "EntrySensor",
           "ExitSensor",
           "MotorRun",
-          "MotorDirection",
           "BoxCount",
-          "PreviousEntrySensor"
+          "PreviousEntrySensor",
+          "BearingHealth",
+          "BearingLubrication",
+          "BearingTemperature",
+          "BearingVibration",
+          "BearingResistance",
+          "BearingTemperatureWarning",
+          "BearingVibrationWarning",
+          "BearingTrip",
+          "AnyBearingTrip",
+          "ResetFault",
+          "MotorRunPermissive",
+          "i"
         ]
       }
     }

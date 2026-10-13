@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2026-10-13T17:24:05"/>
+  <contentHeader name="Unnamed" modificationDateTime="2026-10-13T17:24:05">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="16" y="16"/>
+      </fbd>
+      <ld>
+        <scaling x="16" y="16"/>
+      </ld>
+      <sfc>
+        <scaling x="16" y="16"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="main" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="StartCommand" address="%MX0.0">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Start command from external controller]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="StopCommand" address="%MX0.1">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Stop command from external controller]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ForwardCommand" address="%MX0.2">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Command requesting forward conveyor movement]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ReverseCommand" address="%MX0.3">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Command requesting reverse conveyor movement]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="EntrySensor" address="%MX0.4">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Entry sensor detects a box entering the conveyor]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ExitSensor" address="%MX0.5">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Exit sensor detects a box leaving the conveyor]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="MotorRun" address="%MX0.6">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[PLC-controlled motor run state]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="MotorDirection" address="%MW0">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[PLC motor direction: 1=Forward, -1=Reverse, 0=Stopped]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="BoxCount" address="%MW1">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Number of boxes counted by the PLC from EntrySensor rising edges]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="PreviousEntrySensor">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[Internal memory of EntrySensor from the previous PLC scan]]></xhtml:p>
+              </documentation>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[(* =========================================================
+       MOTOR CONTROL
+       ========================================================= *)
+
+    (* Stop has highest priority *)
+    IF StopCommand THEN
+        MotorRun := FALSE;
+
+    (* Start only if exactly one direction is selected *)
+    (*ELSIF StartCommand AND (ForwardCommand XOR ReverseCommand) THEN
+        MotorRun := TRUE;
+    END_IF;*)
+
+    ELSIF StartCommand THEN
+        MotorRun := TRUE;
+    END_IF;
+
+    (* =========================================================
+       MOTOR DIRECTION
+       
+       1  = Forward
+       -1 = Reverse
+       0  = No direction
+       ========================================================= *)
+
+    (* Conflicting direction commands *)
+    (*IF ForwardCommand AND ReverseCommand THEN
+        MotorRun := FALSE;
+        MotorDirection := 0;*)
+
+    (*ELSIF ForwardCommand THEN
+        MotorDirection := 1;
+
+    ELSIF ReverseCommand THEN
+        MotorDirection := -1;
+    END_IF;*)
+
+
+    (* =========================================================
+       BOX COUNTING
+       
+       Count only when EntrySensor changes:
+       FALSE -> TRUE
+       ========================================================= *)
+
+    IF EntrySensor AND NOT PreviousEntrySensor THEN
+        BoxCount := BoxCount + 1;
+    END_IF;
+
+
+    (* Remember EntrySensor state for the next PLC scan *)
+    PreviousEntrySensor := EntrySensor;]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ ]]></xhtml:p>
+        </documentation>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="task0" priority="1" interval="T#10ms">
+            <pouInstance name="instance0" typeName="main"/>
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
