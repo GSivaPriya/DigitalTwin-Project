@@ -1,0 +1,18 @@
+using UnityEngine;
+
+public class EntrySensor : PhotoelectricSensor
+{
+    protected override void OnBoxDetected(bool value, MQTTPublisher publisher)
+    {
+        if (value)
+        {
+            _= publisher.PublishCommands("factory/conveyor/01/sensors/entry",value);
+
+        }
+        else
+        {
+            Debug.Log("Box cleared");
+            _= publisher.PublishCommands("factory/conveyor/01/sensors/entry",value);
+        }
+    }
+}

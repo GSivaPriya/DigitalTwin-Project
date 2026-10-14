@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PhotoelectricSensor : MonoBehaviour
@@ -6,7 +7,6 @@ public class PhotoelectricSensor : MonoBehaviour
     RaycastHit hit;
     bool boxDetected;
     [SerializeField] float maxDistance=6f;
-    [SerializeField] int boxCount=0;
     [SerializeField] Material material;
     [SerializeField] MQTTPublisher mqttPublisher;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,37 +17,29 @@ public class PhotoelectricSensor : MonoBehaviour
     }
 
     void Update()
-{
-    bool detected = Physics.Raycast(transform.position, transform.forward, out hit, maxDistance) &&
-    hit.collider.CompareTag("Box");
-
-    if (detected != boxDetected)
     {
-        boxDetected = detected;
+        bool detected = Physics.Raycast(transform.position, transform.forward, out hit, maxDistance) &&
+        hit.collider.CompareTag("Box");
 
-        if (boxDetected)
+        if (detected != boxDetected)
         {
-            boxCount++;
-            Debug.Log($"Box detected! Box count:{boxCount}");
-            _= mqttPublisher.PublishCommands("factory/conveyor/01/sensors/entry",boxDetected);
+            boxDetected = detected;
+            OnBoxDetected(boxDetected, mqttPublisher);
+        }
 
+        lineRenderer.SetPosition(0, transform.position);
+
+        if (detected)
+        {
+            lineRenderer.SetPosition(1, hit.point);
         }
         else
         {
-            Debug.Log("Box cleared");
-            _= mqttPublisher.PublishCommands("factory/conveyor/01/sensors/entry",boxDetected);
+            lineRenderer.SetPosition(1, transform.position + transform.forward * maxDistance);
         }
     }
 
-    lineRenderer.SetPosition(0, transform.position);
+    protected virtual void OnBoxDetected(bool value, MQTTPublisher publisher)
+    {}
 
-    if (detected)
-    {
-        lineRenderer.SetPosition(1, hit.point);
-    }
-    else
-    {
-        lineRenderer.SetPosition(1, transform.position + transform.forward * maxDistance);
-    }
-}
 }
