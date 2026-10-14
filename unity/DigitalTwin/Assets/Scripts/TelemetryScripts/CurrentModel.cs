@@ -1,46 +1,42 @@
-
 using UnityEngine;
 
+/// <summary>
+/// Simplified simulated motor-current relationship.
+/// The model depends on operating load and speed, not the hidden bearing state.
+/// Values are illustrative and require calibration for a particular motor/conveyor.
+/// </summary>
 public class CurrentModel
 {
     private readonly float baselineCurrentA;
     private readonly float ratedCurrentA;
+    private readonly float speedContributionA;
     private readonly float noiseStandardDeviationA;
-    private readonly float extraCurrentAtMaxResistanceA;
 
-    public CurrentModel(
-        float baselineCurrentA = 0.5f,
-        float ratedCurrentA = 2.0f,
-        float noiseStandardDeviationA = 0.05f,
-        float extraCurrentAtMaxResistanceA = 0.8f)
+    public CurrentModel(float baselineCurrentA = 0.5f, float ratedCurrentA = 2f,
+        float speedContributionA = 0.3f, float noiseStandardDeviationA = 0.05f)
     {
         this.baselineCurrentA = baselineCurrentA;
         this.ratedCurrentA = ratedCurrentA;
+        this.speedContributionA = speedContributionA;
         this.noiseStandardDeviationA = noiseStandardDeviationA;
-        this.extraCurrentAtMaxResistanceA = extraCurrentAtMaxResistanceA;
     }
 
-    public float CalculateCurrent(
-        float conveyorLoad,
-        float conveyorMaxLoad,
-        bool isRunning,
-        float averageBearingResistance)
+    public float CalculateCurrent(float conveyorLoad, float conveyorMaxLoad,
+        float normalizedSpeed, bool isRunning)
     {
-        if (!isRunning)
-            return 0f;
+        if (!isRunning) return 0f;
 
         float loadRatio = conveyorMaxLoad > 0f
-            ? Mathf.Clamp01(conveyorLoad / conveyorMaxLoad)
-            : 0f;
+            ? Mathf.Clamp01(conveyorLoad / conveyorMaxLoad) : 0f;
+        normalizedSpeed = Mathf.Clamp01(normalizedSpeed);
 
-        float meanCurrent = baselineCurrentA
+        float mean = baselineCurrentA
             + (ratedCurrentA - baselineCurrentA) * loadRatio
-            + extraCurrentAtMaxResistanceA
-                * Mathf.Clamp01(averageBearingResistance);
+            + speedContributionA * normalizedSpeed;
 
-        float noise = Random.Range(-1f, 1f)
-            * noiseStandardDeviationA * Mathf.Sqrt(3f);
-
-        return Mathf.Max(0f, meanCurrent + noise);
+        float u1 = Mathf.Max(Random.value, 0.000001f);
+        float u2 = Random.value;
+        float z = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
+        return Mathf.Max(0f, mean + z * noiseStandardDeviationA);
     }
 }
