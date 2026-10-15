@@ -49,7 +49,21 @@
           "AnyBearingTrip",
           "ResetFault",
           "MotorRunPermissive",
-          "i"
+          "i",
+          "CompletedBoxCount",
+          "PreviousExitSensor",
+          "EntryTimeMs",
+          "QueueHead",
+          "QueueTail",
+          "QueueCount",
+          "CycleTimeMs",
+          "CycleTimeValid",
+          "CycleTimeError",
+          "SpeedSetPoint",
+          "CommandedSpeed",
+          "MaxAllowedSpeed",
+          "SpeedRequestValid",
+          "ResetAccepted"
         ]
       }
     }
