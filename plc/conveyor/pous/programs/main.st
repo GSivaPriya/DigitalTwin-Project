@@ -8,7 +8,7 @@ PROGRAM main
     BoxCount : INT AT %MW1 := 0; (* Number of boxes counted by the PLC from EntrySensor rising edges *)
     PreviousEntrySensor : BOOL := FALSE; (* Internal memory of EntrySensor from the previous PLC scan *)
     BearingTemperature : ARRAY [1..4] OF REAL AT %MD0;
-    BearingVibration : ARRAY [1..4] OF REAL AT %MD4;
+    BearingVibration : ARRAY [1..4] OF REAL AT %MD8;
     BearingTemperatureWarning : ARRAY [1..4] OF BOOL;
     BearingVibrationWarning : ARRAY [1..4] OF BOOL;
     BearingTrip : ARRAY [1..4] OF BOOL;
@@ -30,6 +30,8 @@ PROGRAM main
     MaxAllowedSpeed : REAL := 1.33;
     SpeedRequestValid : BOOL := TRUE;
     ResetAccepted : BOOL := FALSE;
+    MotorCurrent : REAL AT %MD32;
+    ConveyorLoad : REAL AT %MD36;
   END_VAR
 
 SpeedSetPoint := 0.45;
