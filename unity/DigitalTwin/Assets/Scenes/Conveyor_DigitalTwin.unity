@@ -983,6 +983,107 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scripts::RollerIdentity
   rollerID: ROLLER-1
+--- !u!1001 &551316207
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 118646546587984017, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_Name
+      value: PhotoelectricExitSensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: maxDistance
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: mqttPublisher
+      value: 
+      objectReference: {fileID: 1931108896}
+    - target: {fileID: 5580381186991408572, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5580381186991408572, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.002112672
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.301
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.078
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.822
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7821520335355478910, guid: da16b050f6ff6774998778e862190126, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 551316209}
+  m_SourcePrefab: {fileID: 100100000, guid: da16b050f6ff6774998778e862190126, type: 3}
+--- !u!1 &551316208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7821520335355478910, guid: da16b050f6ff6774998778e862190126, type: 3}
+  m_PrefabInstance: {fileID: 551316207}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &551316209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551316208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14db9d720fce71a44b0e9bb4d6b8a235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::ExitSensor
+  maxDistance: 0.55
+  material: {fileID: 2100000, guid: 569592da71bc5094a9c7f459ed4e400a, type: 2}
+  mqttPublisher: {fileID: 1931108896}
 --- !u!1 &665874987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,7 +1495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2521,7 +2622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8064500600429941687, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3357,7 +3458,7 @@ Transform:
   m_GameObject: {fileID: 2109301492}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.289, y: 0.89, z: 3.672}
+  m_LocalPosition: {x: -0.289, y: 0.89, z: -0.262}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3400,7 +3501,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118646546587984017, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: m_Name
-      value: PhotoelectricSensor
+      value: PhotoelectricEntrySensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: maxDistance
@@ -3428,7 +3533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.25
+      value: -2.287
       objectReference: {fileID: 0}
     - target: {fileID: 8488395512196136112, guid: da16b050f6ff6774998778e862190126, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3458,11 +3563,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4841538663186362259, guid: da16b050f6ff6774998778e862190126, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7821520335355478910, guid: da16b050f6ff6774998778e862190126, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 5957433159180606709}
   m_SourcePrefab: {fileID: 100100000, guid: da16b050f6ff6774998778e862190126, type: 3}
+--- !u!1 &5957433159180606708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7821520335355478910, guid: da16b050f6ff6774998778e862190126, type: 3}
+  m_PrefabInstance: {fileID: 5957433159180606707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5957433159180606709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957433159180606708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5ff20518a62a0468f9f5428aa3d646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::EntrySensor
+  maxDistance: 0.55
+  material: {fileID: 2100000, guid: 569592da71bc5094a9c7f459ed4e400a, type: 2}
+  mqttPublisher: {fileID: 1931108896}
 --- !u!1001 &6470136373030655672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3555,6 +3684,10 @@ PrefabInstance:
       propertyPath: conveyorID
       value: CONV_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+      propertyPath: conveyorMaxLoad
+      value: 125
+      objectReference: {fileID: 0}
     - target: {fileID: 6699515469286543234, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
       propertyPath: bearingID
       value: BEARING-2
@@ -3594,6 +3727,7 @@ SceneRoots:
   - {fileID: 2106326237}
   - {fileID: 985001302}
   - {fileID: 5957433159180606707}
+  - {fileID: 551316207}
   - {fileID: 27746905}
   - {fileID: 2109301494}
   - {fileID: 290832438}

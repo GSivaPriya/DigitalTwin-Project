@@ -1,125 +1,96 @@
+using MQTTnet;
 using UnityEngine;
 
+/// <summary>
+/// Simulates observable bearing temperature and vibration. The hidden condition
+/// and lubrication variables only influence the sensor models; they are not
+/// sensor readings, PLC inputs, or intended ML features. Wear parameters are
+/// illustrative and are not a validated bearing-life model.
+/// </summary>
 public class BearingSimulation : MonoBehaviour
 {
-    [Header("Bearing Identification")]
+    [Header("Identification")]
     [SerializeField] private string bearingID = "BEARING-1";
-
+    RollerIdentity rollerID;
     public string BearingID => bearingID;
 
-    public string FullBearingID
+    public void FullBearingID()
     {
-        get
-        {
-            RollerIdentity roller =
-                GetComponentInParent<RollerIdentity>();
-
-            if (roller == null)
-                return bearingID;
-
-            return $"{roller.RollerID}/{bearingID}";
-        }
+        rollerID = GetComponentInParent<RollerIdentity>();
     }
 
-    [Header("Initial Bearing Condition")]
-    [Range(0f, 1f)]
-    [SerializeField] private float initialHealth = 1f;
+    [Header("Hidden internal state")]
+    [Range(0f, 1f)] [SerializeField] private float initialHiddenCondition = 1f;
+    [Range(0f, 1f)] [SerializeField] private float initialLubricationState = 1f;
+    [Tooltip("Illustrative simulated degradation per operating hour; not a real wear estimate.")]
+    [Min(0f)] [SerializeField] private float hiddenDegradationPerHour = 0.0005f;
+    [Min(0f)] [SerializeField] private float hiddenLubricationLossPerHour = 0.002f;
 
-    [Range(0f, 1f)]
-    [SerializeField] private float initialLubrication = 1f;
-
-    [Header("Illustrative Wear Rates")]
-    [SerializeField] private float wearPerHour = 0.0005f;
-    [SerializeField] private float lubricationLossPerHour = 0.002f;
-
-    [Header("Model Settings")]
+    [Header("Temperature")]
     [SerializeField] private float initialTemperatureC = 25f;
 
     private TemperatureModel temperatureModel;
     private VibrationModel vibrationModel;
+    private float hiddenCondition;
+    private float hiddenLubrication;
+    private float hiddenRelativeResistance;
 
-    public float Health { get; private set; }
-    public float Lubrication { get; private set; }
     public float TemperatureC { get; private set; }
     public float VibrationMmS { get; private set; }
 
-    // Simplified relative resistance, from 0 to 1.
-    public float Resistance { get; private set; }
-
-    private bool initialized;
+    private MQTTPublisher mqttPublisher;
 
     private void Awake()
     {
-        Health = initialHealth;
-        Lubrication = initialLubrication;
-
+        hiddenCondition = initialHiddenCondition;
+        hiddenLubrication = initialLubricationState;
         temperatureModel = new TemperatureModel(initialTemperatureC);
         vibrationModel = new VibrationModel();
-
         TemperatureC = initialTemperatureC;
-        initialized = true;
+    }
+    void Start()
+    {
+        mqttPublisher = GameObject.FindFirstObjectByType<MQTTPublisher>();
     }
 
-    public void SimulateStep(
-        float ambientTemperatureC,
-        float loadRatio,
-        float normalizedSpeed,
-        bool isRunning,
-        float deltaTime)
+    public void SimulateStep(float ambientTemperatureC, float loadRatio,
+        float normalizedSpeed, bool isRunning, float deltaTime)
     {
-        if (!initialized)
-            return;
-
         loadRatio = Mathf.Clamp01(loadRatio);
         normalizedSpeed = Mathf.Clamp01(normalizedSpeed);
+        deltaTime = Mathf.Max(0f, deltaTime);
 
-        // Update bearing condition using the temperature
-        // from the previous sample.
         if (isRunning)
         {
-            float temperatureFactor = 1f +
-                Mathf.Max(0f, TemperatureC - 60f) / 40f;
+            float temperatureFactor = 1f + Mathf.Max(0f, TemperatureC - 60f) / 40f;
+            float lubricationFactor = 1f + 3f * (1f - hiddenLubrication);
+            float degradation = hiddenDegradationPerHour * (0.2f + loadRatio) *
+                normalizedSpeed * lubricationFactor * temperatureFactor * deltaTime / 3600f;
+            hiddenCondition = Mathf.Clamp01(hiddenCondition - degradation);
 
-            float lubricationFactor = 1f +
-                3f * (1f - Lubrication);
-
-            float wear = wearPerHour
-                * (0.2f + loadRatio)
-                * normalizedSpeed
-                * lubricationFactor
-                * temperatureFactor
-                * deltaTime / 3600f;
-
-            Health = Mathf.Clamp01(Health - wear);
-
-            float lubricationLoss = lubricationLossPerHour
-                * (0.2f + loadRatio)
-                * normalizedSpeed
-                * deltaTime / 3600f;
-
-            Lubrication = Mathf.Clamp01(
-                Lubrication - lubricationLoss);
+            float lubricationLoss = hiddenLubricationLossPerHour *
+                (0.2f + loadRatio) * normalizedSpeed * deltaTime / 3600f;
+            hiddenLubrication = Mathf.Clamp01(hiddenLubrication - lubricationLoss);
         }
 
-        // Calculate relative mechanical resistance.
-        Resistance = Mathf.Clamp01(
-            0.6f * (1f - Health) +
-            0.4f * (1f - Lubrication));
+        hiddenRelativeResistance = Mathf.Clamp01(
+            0.6f * (1f - hiddenCondition) + 0.4f * (1f - hiddenLubrication));
 
-        // Estimate bearing temperature.
         TemperatureC = temperatureModel.CalculateTemperature(
-            ambientTemperatureC,
-            loadRatio,
-            isRunning,
-            Resistance,
-            deltaTime);
+            ambientTemperatureC, loadRatio, isRunning, hiddenRelativeResistance, deltaTime);
 
-        // Estimate bearing vibration.
         VibrationMmS = vibrationModel.CalculateVibration(
-            loadRatio,
-            normalizedSpeed,
-            isRunning,
-            Health,
-            Lubrication);
+            loadRatio, normalizedSpeed, isRunning, hiddenCondition, hiddenLubrication);
+
+        PublishTelemetry();
     }
+
+    void PublishTelemetry()
+    {
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemery/{rollerID}/{bearingID}/temperature",TemperatureC);
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemery/{rollerID}/{bearingID}/vibration",VibrationMmS);
+    }
+
+    // Internal model coupling only; do not publish as a sensor or ML feature.
+    public float GetHiddenRelativeResistanceForCurrentModel() => hiddenRelativeResistance;
 }

@@ -5,6 +5,7 @@ public class ConveyorControllerCommands : MonoBehaviour
 {
     bool startCommand;
     bool stopCommand;
+    [SerializeField] float speedSetPoint=0.45f;
 
     MQTTPublisher mqttPublisher;
 
@@ -44,9 +45,17 @@ public class ConveyorControllerCommands : MonoBehaviour
         PublishStates();
     }
 
+    async Task OnSpeedChange(float speed)
+    {
+        speedSetPoint=speed;
+        PublishStates();
+    }
+
     void PublishStates()
     {
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/start", startCommand);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/stop", stopCommand);
+        _ = mqttPublisher.PublishCommands("factory/conveyor/01/commands/speed-setpoint",speedSetPoint.ToString(
+            System.Globalization.CultureInfo.InvariantCulture));
     }
 }
