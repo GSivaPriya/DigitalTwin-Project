@@ -165,7 +165,7 @@
         "type": "function",
         "z": "ea087883fe7f4ebf",
         "name": "function 1",
-        "func": "let direction = msg.payload[0];\nlet boxCount = msg.payload[1];\n\nif (direction > 32767) {\n    direction -= 65536;\n}\n\nmsg.topic = \"registers\";\n\nmsg.payload = {\n    motorDirection: direction,\n    boxCount: boxCount\n};\n\nreturn msg;",
+        "func": "\nlet boxCount = msg.payload[1];\n\nmsg.topic = \"registers\";\n\nmsg.payload = {\n    boxCount: boxCount\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -234,7 +234,7 @@
         "type": "function",
         "z": "ea087883fe7f4ebf",
         "name": "Build Conveyor Status",
-        "func": "msg.payload = {\n    machineRunning: msg.payload.coils.motorRun,\n    machineDirection: msg.payload.registers.motorDirection,\n    boxCount: msg.payload.registers.boxCount\n};\n\nreturn msg;",
+        "func": "\nmsg.payload = {\n    machineRunning: msg.payload.coils.motorRun,\n    boxCount: msg.payload.registers.boxCount\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -258,11 +258,131 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 320,
+        "x": 760,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c997d1c1ef2c8bb1",
+        "type": "modbus-read",
+        "z": "ea087883fe7f4ebf",
+        "name": "",
+        "topic": "speed_test",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "42",
+        "quantity": "2",
+        "rate": "1000",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "enableDeformedMessages": false,
+        "startDelayTime": "",
+        "server": "f8cf27b21adb353a",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9c303d5686a0dce7",
+        "type": "function",
+        "z": "ea087883fe7f4ebf",
+        "name": "Decode speed",
+        "func": "\nconst regs = msg.payload;\n\nif (!Array.isArray(regs) || regs.length < 2) {\n    node.warn(\"Expected two Modbus registers\");\n    return null;\n}\n\nconst buf = Buffer.alloc(4);\nbuf.writeUInt16BE(regs[0], 0);\nbuf.writeUInt16BE(regs[1], 2);\n\nmsg.payload = buf.readFloatBE(0);\nmsg.topic = \"speed_test_decoded\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 420,
+        "wires": [
+            [
+                "439602c0c7fecae6"
+            ]
+        ]
+    },
+    {
+        "id": "0b94b07a53f1f1b2",
+        "type": "debug",
+        "z": "ea087883fe7f4ebf",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "9551cf223b3959e7",
+        "type": "modbus-read",
+        "z": "ea087883fe7f4ebf",
+        "name": "CommandedSpeed",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "46",
+        "quantity": "2",
+        "rate": "1000",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "enableDeformedMessages": false,
+        "startDelayTime": "",
+        "server": "f8cf27b21adb353a",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "9c303d5686a0dce7"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "439602c0c7fecae6",
+        "type": "mqtt out",
+        "z": "ea087883fe7f4ebf",
+        "name": "",
+        "topic": "factory/conveyor/01/commandedSpeed",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "19783d821ba97b87",
+        "x": 740,
+        "y": 420,
         "wires": []
     },
     {
@@ -279,7 +399,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 200,
-        "y": 140,
+        "y": 200,
         "wires": [
             [
                 "08487d425b14441a"
@@ -300,49 +420,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 200,
-        "y": 200,
-        "wires": [
-            [
-                "08487d425b14441a"
-            ]
-        ]
-    },
-    {
-        "id": "d49ca2c487d6d9a6",
-        "type": "mqtt in",
-        "z": "5cd55ca858fd3527",
-        "name": "",
-        "topic": "factory/conveyor/01/commands/forward",
-        "qos": "0",
-        "datatype": "auto-detect",
-        "broker": "19783d821ba97b87",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 230,
         "y": 260,
-        "wires": [
-            [
-                "08487d425b14441a"
-            ]
-        ]
-    },
-    {
-        "id": "f13f7740f8e53a61",
-        "type": "mqtt in",
-        "z": "5cd55ca858fd3527",
-        "name": "",
-        "topic": "factory/conveyor/01/commands/reverse",
-        "qos": "0",
-        "datatype": "auto-detect",
-        "broker": "19783d821ba97b87",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 230,
-        "y": 320,
         "wires": [
             [
                 "08487d425b14441a"
@@ -362,8 +440,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 210,
-        "y": 380,
+        "x": 190,
+        "y": 320,
         "wires": [
             [
                 "08487d425b14441a"
@@ -383,8 +461,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 210,
-        "y": 440,
+        "x": 190,
+        "y": 400,
         "wires": [
             [
                 "08487d425b14441a"
@@ -396,18 +474,19 @@
         "type": "function",
         "z": "5cd55ca858fd3527",
         "name": "function 3",
-        "func": "const topicMap = {\n    \"factory/conveyor/01/commands/start\": 0,\n    \"factory/conveyor/01/commands/stop\": 1,\n    \"factory/conveyor/01/commands/forward\": 2,\n    \"factory/conveyor/01/commands/reverse\": 3,\n    \"factory/conveyor/01/sensors/entry\": 4,\n    \"factory/conveyor/01/sensors/exit\": 5\n};\n\nconst address = topicMap[msg.topic];\n\nif (address === undefined) {\n    return null;\n}\n\nconst value = typeof msg.payload === \"string\"\n    ? msg.payload.toLowerCase() === \"true\"\n    : Boolean(msg.payload);\n\nmsg.payload = {\n    value: value,\n    fc: 5,\n    unitid: 1,\n    address: address,\n    quantity: 1\n};\n\nreturn msg;",
+        "func": "\nconst topicMap = {\n    \"factory/conveyor/01/commands/start\": 0,\n    \"factory/conveyor/01/commands/stop\": 1,\n    \"factory/conveyor/01/sensors/entry\": 4,\n    \"factory/conveyor/01/sensors/exit\": 5\n};\n\nconst address = topicMap[msg.topic];\n\nif (address === undefined) {\n    return null;\n}\n\nconst value = typeof msg.payload === \"string\"\n    ? msg.payload.toLowerCase() === \"true\"\n    : Boolean(msg.payload);\n\nmsg.payload = {\n    value: value,\n    fc: 5,\n    unitid: 1,\n    address: address,\n    quantity: 1\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 280,
+        "x": 600,
+        "y": 320,
         "wires": [
             [
-                "8ddbce567cbed224"
+                "8ddbce567cbed224",
+                "725e17611b3609c0"
             ]
         ]
     },
@@ -424,8 +503,140 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 550,
-        "y": 380,
+        "x": 850,
+        "y": 280,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "fe2618dc6ef2851b",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "Conveyor Speed Setpoint",
+        "topic": "factory/conveyor/01/commands/speed-setpoint",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "539caa671566b953"
+            ]
+        ]
+    },
+    {
+        "id": "725e17611b3609c0",
+        "type": "debug",
+        "z": "5cd55ca858fd3527",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d1d98a5e308e6337",
+        "type": "inject",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "factory/conveyor/01/commands/start",
+        "payload": "true",
+        "payloadType": "str",
+        "x": 170,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fcd1c750907bc345",
+        "type": "inject",
+        "z": "5cd55ca858fd3527",
+        "name": "stop",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "factory/conveyor/01/commands/stop",
+        "payload": "true",
+        "payloadType": "str",
+        "x": 130,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "539caa671566b953",
+        "type": "function",
+        "z": "5cd55ca858fd3527",
+        "name": "encode speed set point",
+        "func": "\nconst speed = Number(msg.payload);\n\nif (!Number.isFinite(speed) || speed < 0 || speed > 1.33) {\n    node.warn(\"Speed setpoint must be between 0 and 1.33\");\n    return null;\n}\n\n// Encode IEEE-754 REAL as two 16-bit registers,\n// high word first, matching the OpenPLC mapping.\nconst buf = Buffer.alloc(4);\nbuf.writeFloatBE(speed, 0);\n\nconst highWord = buf.readUInt16BE(0);\nconst lowWord = buf.readUInt16BE(2);\n\nmsg.payload = {\n    value: [highWord, lowWord],\n    fc: 16,\n    unitid: 1,\n    address: 42,\n    quantity: 2\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 660,
+        "wires": [
+            [
+                "096372cbccc55196"
+            ]
+        ]
+    },
+    {
+        "id": "096372cbccc55196",
+        "type": "modbus-flex-write",
+        "z": "5cd55ca858fd3527",
+        "name": "write speed set point",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "server": "f8cf27b21adb353a",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 760,
+        "y": 660,
         "wires": [
             [],
             []
