@@ -38,11 +38,8 @@
           "MotorRun",
           "BoxCount",
           "PreviousEntrySensor",
-          "BearingHealth",
-          "BearingLubrication",
           "BearingTemperature",
           "BearingVibration",
-          "BearingResistance",
           "BearingTemperatureWarning",
           "BearingVibrationWarning",
           "BearingTrip",
@@ -63,7 +60,9 @@
           "CommandedSpeed",
           "MaxAllowedSpeed",
           "SpeedRequestValid",
-          "ResetAccepted"
+          "ResetAccepted",
+          "MotorCurrent",
+          "ConveyorLoad"
         ]
       }
     }

@@ -47,6 +47,8 @@ public class BearingSimulation : MonoBehaviour
         temperatureModel = new TemperatureModel(initialTemperatureC);
         vibrationModel = new VibrationModel();
         TemperatureC = initialTemperatureC;
+
+        FullBearingID();
     }
     void Start()
     {
@@ -87,8 +89,8 @@ public class BearingSimulation : MonoBehaviour
 
     void PublishTelemetry()
     {
-        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemery/{rollerID}/{bearingID}/temperature",TemperatureC);
-        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemery/{rollerID}/{bearingID}/vibration",VibrationMmS);
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/temperature",TemperatureC);
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/vibration",VibrationMmS);
     }
 
     // Internal model coupling only; do not publish as a sensor or ML feature.

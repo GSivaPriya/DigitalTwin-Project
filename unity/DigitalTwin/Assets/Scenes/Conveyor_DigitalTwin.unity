@@ -796,6 +796,95 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &356299877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 356299878}
+  - component: {fileID: 356299879}
+  m_Layer: 0
+  m_Name: SimulationMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &356299878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356299877}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 439570358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &356299879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356299877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb9312eaaad9864a9d81f1d97bf742c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::SimulationMaster
+  mqttClient: {fileID: 230346444}
+  publisher: {fileID: 1931108896}
+  spawner: {fileID: 1918640184}
+  conveyor: {fileID: 6470136373030655674}
+  telemetry: {fileID: 6470136373030655673}
+  startTopic: factory/conveyor/01/commands/start
+  stopTopic: factory/conveyor/01/commands/stop
+  samplingIntervalSeconds: 1
+  targetSamples: 80000
+  stopWhenTargetReached: 1
+  commandSettleSeconds: 2
+  startAutomatically: 1
+  scenarios:
+  - scenarioName: Light load - nominal speed
+    minimumBoxMassKg: 5.5
+    maximumBoxMassKg: 6
+    spawnIntervalSeconds: 3
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 180
+    drainTimeoutSeconds: 30
+    coolingDurationSeconds: 180
+  - scenarioName: Medium load - nominal speed
+    minimumBoxMassKg: 8.5
+    maximumBoxMassKg: 9.5
+    spawnIntervalSeconds: 2.5
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 180
+    drainTimeoutSeconds: 30
+    coolingDurationSeconds: 180
+  - scenarioName: Heavy load - nominal speed
+    minimumBoxMassKg: 12
+    maximumBoxMassKg: 13
+    spawnIntervalSeconds: 2
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 180
+    drainTimeoutSeconds: 30
+    coolingDurationSeconds: 180
+  - scenarioName: Medium load - higher speed
+    minimumBoxMassKg: 8.5
+    maximumBoxMassKg: 9.5
+    spawnIntervalSeconds: 2.5
+    conveyorSpeed: 0.75
+    runningDurationSeconds: 180
+    drainTimeoutSeconds: 30
+    coolingDurationSeconds: 180
 --- !u!1 &439570357
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +915,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1918640183}
+  - {fileID: 356299878}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &507494538
@@ -1394,6 +1484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9646784d77ba2b240b0dd300fcdf108a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConveyorController
+  speedSetPoint: 0.45
 --- !u!1 &768682479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,7 +1611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &861336669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3043,6 +3134,8 @@ MonoBehaviour:
   objectToSpawn: {fileID: 9191230482217242881, guid: d0e576a6d5b152443917326c0d7284e3, type: 3}
   time: 5
   repeatRate: 3
+  minimumMassKg: 4.8
+  maximumMassKg: 5.2
 --- !u!1 &1931108894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,6 +3359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MQTTSubscriber
   mqttClient: {fileID: 230346444}
+  CommandedConveyorSpeed: 0
 --- !u!1 &2025346610
 GameObject:
   m_ObjectHideFlags: 0
@@ -3715,6 +3809,28 @@ PrefabInstance:
       insertIndex: 2
       addedObject: {fileID: 1794672313}
   m_SourcePrefab: {fileID: 100100000, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+--- !u!114 &6470136373030655673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4480523655547938002, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+  m_PrefabInstance: {fileID: 6470136373030655672}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe376f87de40a4d40b0789654ef26c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConveyorTelemetryGenerator
+--- !u!114 &6470136373030655674 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6818745343361068701, guid: dee7ce534f519334bb567616d3fd3f87, type: 3}
+  m_PrefabInstance: {fileID: 6470136373030655672}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e567a8fdb489043a229fa1e509a401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConveyorBeltPhysics
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

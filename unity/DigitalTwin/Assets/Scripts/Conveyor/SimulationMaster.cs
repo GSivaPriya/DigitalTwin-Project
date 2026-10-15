@@ -22,6 +22,7 @@ public class SimulationMaster : MonoBehaviour
     }
 
     [Header("References")]
+    [SerializeField] private MQTTClient mqttClient;
     [SerializeField] private MQTTPublisher publisher;
     [SerializeField] private ObjectSpawner spawner;
     [SerializeField] private ConveyorBeltPhysics conveyor;
@@ -84,6 +85,11 @@ public class SimulationMaster : MonoBehaviour
 
     private IEnumerator RunScenarios()
     {
+        while (mqttClient.Client == null || !mqttClient.Client.IsConnected)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        
         sequenceRunning = true;
         initialSampleCount = telemetry.SampleCount;
         Debug.Log("SimulationMaster: starting normal-operation data collection.");

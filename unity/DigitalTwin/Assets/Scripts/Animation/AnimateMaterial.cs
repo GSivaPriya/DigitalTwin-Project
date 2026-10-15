@@ -16,7 +16,6 @@ public class AnimateMaterial : MonoBehaviour
         mqttSubscriber = GameObject.FindFirstObjectByType<MQTTSubscriber>();
         conveyor = GetComponent<ConveyorBeltPhysics>();
 
-
         targetMaterial= meshRenderer.materials[materialIndex];
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using MQTTnet;
@@ -20,6 +21,8 @@ public class MQTTSubscriber : MonoBehaviour
 
     public MachineStatus CurrentStatus{get;private set;}
     public float CommandedConveyorSpeed;
+
+    public Action<float> OnCommandedSpeedChange;
 
     private async void Start()
     {
@@ -70,6 +73,7 @@ public class MQTTSubscriber : MonoBehaviour
                     out float speed))
             {
                 CommandedConveyorSpeed = speed;
+                OnCommandedSpeedChange.Invoke(CommandedConveyorSpeed);
             } 
         }
         return Task.CompletedTask;

@@ -73,7 +73,7 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
                 mqttSubscriber.CurrentStatus != null &&
                 mqttSubscriber.CurrentStatus.machineRunning;
 
-            normalizedSpeed = conveyor.ConveyorMaxSpeed > 0f
+            normalizedSpeed = isConveyorRunning && conveyor.ConveyorMaxSpeed > 0f
                 ? Mathf.Clamp01(Mathf.Abs(conveyor.ConveyorSpeed) / conveyor.ConveyorMaxSpeed)
                 : 0f;
 
@@ -97,7 +97,7 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
 
     void PublishTelemetry()
     {
-        _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/speed",conveyor.ConveyorSpeed);
+        // _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/speed",normalizedSpeed*conveyor.ConveyorSpeed);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/load",conveyorLoad);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/motorCurrent",motorCurrent);
     }

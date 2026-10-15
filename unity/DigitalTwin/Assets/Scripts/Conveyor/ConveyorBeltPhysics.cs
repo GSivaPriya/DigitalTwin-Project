@@ -11,18 +11,34 @@ public class ConveyorBeltPhysics : MonoBehaviour
     HashSet<Rigidbody> boxesOnConveyor = new HashSet<Rigidbody>();
     public float ConveyorLoad {get ; private set;}
 
+    void OnEnable()
+    {
+        
+    }
+    void OnDisable()
+    {
+        
+    }
+
     void Start()
     {
         mqttSubscriber = GameObject.FindFirstObjectByType<MQTTSubscriber>();
         mqttPublisher =  GameObject.FindFirstObjectByType<MQTTPublisher>();
+
+        mqttSubscriber.OnCommandedSpeedChange += ReceiveCommandedSpeed;
+    }
+    void OnDestroy()
+    {
+        mqttSubscriber.OnCommandedSpeedChange -= ReceiveCommandedSpeed;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is create
 
     public void SetSimulationSpeed(float speed)
     {
+        if(mqttPublisher==null)
+        return;
+        
         RequestChangeSpeed(speed);
-        float commandedSpeed = ReceiveCommandedSpeed();
-        ConveyorSpeed = Mathf.Clamp(commandedSpeed, 0f, ConveyorMaxSpeed);
     }
 
 
@@ -31,10 +47,9 @@ public class ConveyorBeltPhysics : MonoBehaviour
         _=mqttPublisher.PublishCommands("factory/conveyor/01/commands/speed-setpoint",speed);
     }
 
-    float ReceiveCommandedSpeed()
+    void ReceiveCommandedSpeed(float speed)
     {
-        float speed = mqttSubscriber.CommandedConveyorSpeed;
-        return speed;
+        ConveyorSpeed=Mathf.Clamp(speed, 0f, ConveyorMaxSpeed);
     }
 
 
