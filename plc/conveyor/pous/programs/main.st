@@ -32,9 +32,11 @@ PROGRAM main
     ResetAccepted : BOOL := FALSE;
     MotorCurrent : REAL AT %MD32;
     ConveyorLoad : REAL AT %MD36;
+    TestVar : REAL AT %MD37 := 25.5;
   END_VAR
 
-SpeedSetPoint := 0.45;
+(*SpeedSetPoint := 0.45;
+TestVar := 25.5;*)
 
 (* =========================================================
    BEARING WARNING AND TRIP MONITORING
@@ -85,11 +87,11 @@ MotorRunPermissive := NOT AnyBearingTrip;
    ========================================================= *)
 
 SpeedRequestValid :=
-    (SpeedSetpoint >= 0.0) AND
-    (SpeedSetpoint <= MaxAllowedSpeed);
+    (SpeedSetPoint >= 0.0) AND
+    (SpeedSetPoint <= MaxAllowedSpeed);
 
 IF SpeedRequestValid THEN
-    CommandedSpeed := SpeedSetpoint;
+    CommandedSpeed := SpeedSetPoint;
 ELSE
     (* Invalid requests are rejected *)
     CommandedSpeed := 0.0;

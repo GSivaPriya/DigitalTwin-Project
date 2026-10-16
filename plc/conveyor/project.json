@@ -62,7 +62,8 @@
           "SpeedRequestValid",
           "ResetAccepted",
           "MotorCurrent",
-          "ConveyorLoad"
+          "ConveyorLoad",
+          "TestVar"
         ]
       }
     }
