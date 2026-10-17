@@ -87,6 +87,7 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
 
             motorCurrent = currentModel.CalculateCurrent(
                 conveyorLoad, conveyorMaxLoad, normalizedSpeed, isConveyorRunning);
+                Debug.Log($"Current generated: {motorCurrent} ");
 
             PublishTelemetry();
 
@@ -100,5 +101,6 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
         // _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/speed",normalizedSpeed*conveyor.ConveyorSpeed);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/load",conveyorLoad);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/motorCurrent",motorCurrent);
+        Debug.Log($"conveyorLoad {conveyorLoad}");
     }
 }

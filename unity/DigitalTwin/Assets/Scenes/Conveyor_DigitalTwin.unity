@@ -806,6 +806,7 @@ GameObject:
   m_Component:
   - component: {fileID: 356299878}
   - component: {fileID: 356299879}
+  - component: {fileID: 356299880}
   m_Layer: 0
   m_Name: SimulationMaster
   m_TagString: Untagged
@@ -835,7 +836,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356299877}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aeb9312eaaad9864a9d81f1d97bf742c, type: 3}
   m_Name: 
@@ -848,8 +849,8 @@ MonoBehaviour:
   startTopic: factory/conveyor/01/commands/start
   stopTopic: factory/conveyor/01/commands/stop
   samplingIntervalSeconds: 1
-  targetSamples: 80000
-  stopWhenTargetReached: 1
+  targetSamples: 5000
+  stopWhenTargetReached: 0
   commandSettleSeconds: 2
   startAutomatically: 1
   scenarios:
@@ -885,6 +886,87 @@ MonoBehaviour:
     runningDurationSeconds: 180
     drainTimeoutSeconds: 30
     coolingDurationSeconds: 180
+--- !u!114 &356299880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356299877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de05f25384fd1441b4ae0a07b2b0cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::SimulationMasterCheck
+  mqttClient: {fileID: 230346444}
+  publisher: {fileID: 1931108896}
+  spawner: {fileID: 1918640184}
+  conveyor: {fileID: 6470136373030655674}
+  telemetry: {fileID: 6470136373030655673}
+  startTopic: factory/conveyor/01/commands/start
+  stopTopic: factory/conveyor/01/commands/stop
+  samplingIntervalSeconds: 1
+  targetSamples: 100800
+  stopWhenTargetReached: 1
+  commandSettleSeconds: 2
+  startAutomatically: 1
+  scenarios:
+  - scenarioName: Light load - nominal speed
+    minimumBoxMassKg: 5.5
+    maximumBoxMassKg: 6
+    spawnIntervalSeconds: 3
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Medium load - nominal speed
+    minimumBoxMassKg: 8.5
+    maximumBoxMassKg: 9.5
+    spawnIntervalSeconds: 2.5
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Heavy load - nominal speed
+    minimumBoxMassKg: 12
+    maximumBoxMassKg: 13
+    spawnIntervalSeconds: 2
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Medium load - higher speed
+    minimumBoxMassKg: 8.5
+    maximumBoxMassKg: 9.5
+    spawnIntervalSeconds: 2.5
+    conveyorSpeed: 0.75
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Light load - higher throughput
+    minimumBoxMassKg: 5.5
+    maximumBoxMassKg: 6
+    spawnIntervalSeconds: 2
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Medium load - slower throughput
+    minimumBoxMassKg: 8.5
+    maximumBoxMassKg: 9.5
+    spawnIntervalSeconds: 3.5
+    conveyorSpeed: 0.45
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
+  - scenarioName: Heavy load - higher speed
+    minimumBoxMassKg: 12
+    maximumBoxMassKg: 13
+    spawnIntervalSeconds: 2
+    conveyorSpeed: 0.75
+    runningDurationSeconds: 3240
+    drainTimeoutSeconds: 60
+    coolingDurationSeconds: 300
 --- !u!1 &439570357
 GameObject:
   m_ObjectHideFlags: 0

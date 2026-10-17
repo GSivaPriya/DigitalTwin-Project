@@ -73,6 +73,7 @@ public class MQTTSubscriber : MonoBehaviour
                     out float speed))
             {
                 CommandedConveyorSpeed = speed;
+                Debug.Log("Subscriber received commanded speed");
                 OnCommandedSpeedChange.Invoke(CommandedConveyorSpeed);
             } 
         }

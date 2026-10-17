@@ -43,10 +43,10 @@ public class SimulationMaster : MonoBehaviour
     [Header("Normal scenarios")]
     [SerializeField] private Scenario[] scenarios =
     {
-        new Scenario { scenarioName = "Light load - nominal speed", minimumBoxMassKg = 5.5f, maximumBoxMassKg = 6f, spawnIntervalSeconds = 3f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f, drainTimeoutSeconds = 30f, coolingDurationSeconds = 180f },
-        new Scenario { scenarioName = "Medium load - nominal speed", minimumBoxMassKg = 8.5f, maximumBoxMassKg = 9.5f, spawnIntervalSeconds = 2.5f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f, drainTimeoutSeconds = 30f, coolingDurationSeconds = 180f },
-        new Scenario { scenarioName = "Heavy load - nominal speed", minimumBoxMassKg = 12f, maximumBoxMassKg = 13f, spawnIntervalSeconds = 2f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f, drainTimeoutSeconds = 30f, coolingDurationSeconds = 180f },
-        new Scenario { scenarioName = "Medium load - higher speed", minimumBoxMassKg = 8.5f, maximumBoxMassKg = 9.5f, spawnIntervalSeconds = 2.5f, conveyorSpeed = 0.75f, runningDurationSeconds = 180f, drainTimeoutSeconds = 30f, coolingDurationSeconds = 180f }
+        new Scenario { scenarioName = "Light load - nominal speed", minimumBoxMassKg = 5.5f, maximumBoxMassKg = 6f, spawnIntervalSeconds = 3f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f/3, drainTimeoutSeconds = 30f/3, coolingDurationSeconds = 180f/3 },
+        new Scenario { scenarioName = "Medium load - nominal speed", minimumBoxMassKg = 8.5f, maximumBoxMassKg = 9.5f, spawnIntervalSeconds = 2.5f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f/3, drainTimeoutSeconds = 30f/3, coolingDurationSeconds = 180f/3 },
+        new Scenario { scenarioName = "Heavy load - nominal speed", minimumBoxMassKg = 12f, maximumBoxMassKg = 13f, spawnIntervalSeconds = 2f, conveyorSpeed = 0.45f, runningDurationSeconds = 180f/3, drainTimeoutSeconds = 30f/3, coolingDurationSeconds = 180f/3 },
+        new Scenario { scenarioName = "Medium load - higher speed", minimumBoxMassKg = 8.5f, maximumBoxMassKg = 9.5f, spawnIntervalSeconds = 2.5f, conveyorSpeed = 0.75f, runningDurationSeconds = 180f/3, drainTimeoutSeconds = 30f/3, coolingDurationSeconds = 180f/3 }
     };
 
     private Coroutine sequence;

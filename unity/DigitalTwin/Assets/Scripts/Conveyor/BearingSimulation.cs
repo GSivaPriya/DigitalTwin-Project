@@ -83,6 +83,7 @@ public class BearingSimulation : MonoBehaviour
 
         VibrationMmS = vibrationModel.CalculateVibration(
             loadRatio, normalizedSpeed, isRunning, hiddenCondition, hiddenLubrication);
+        Debug.Log($"Temp: {TemperatureC}, Vib: {VibrationMmS}");
 
         PublishTelemetry();
     }

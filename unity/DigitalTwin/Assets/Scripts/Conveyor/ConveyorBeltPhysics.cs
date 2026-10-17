@@ -39,17 +39,20 @@ public class ConveyorBeltPhysics : MonoBehaviour
         return;
         
         RequestChangeSpeed(speed);
+        
     }
 
 
     void RequestChangeSpeed(float speed)
     {
         _=mqttPublisher.PublishCommands("factory/conveyor/01/commands/speed-setpoint",speed);
+        Debug.Log($"Speed request sent with speed: {speed}");
     }
 
     void ReceiveCommandedSpeed(float speed)
     {
         ConveyorSpeed=Mathf.Clamp(speed, 0f, ConveyorMaxSpeed);
+        Debug.Log($"Conveyor speed received: {ConveyorSpeed}");
     }
 
 

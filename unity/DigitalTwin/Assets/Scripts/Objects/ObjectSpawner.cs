@@ -40,7 +40,9 @@ public class ObjectSpawner : MonoBehaviour
 
             if (spawningEnabled && plcRunning)
             {
+                Debug.Log("Object spawning requested!");
                 SpawnObject();
+                
                 yield return new WaitForSeconds(Mathf.Max(0.1f, repeatRate));
             }
             else yield return null;
