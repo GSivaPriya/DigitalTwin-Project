@@ -123,8 +123,8 @@
         "correl": "",
         "expiry": "",
         "broker": "19783d821ba97b87",
-        "x": 850,
-        "y": 240,
+        "x": 770,
+        "y": 320,
         "wires": []
     },
     {
@@ -250,54 +250,6 @@
         ]
     },
     {
-        "id": "e87b0eac5812c722",
-        "type": "debug",
-        "z": "ea087883fe7f4ebf",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 760,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "c997d1c1ef2c8bb1",
-        "type": "modbus-read",
-        "z": "ea087883fe7f4ebf",
-        "name": "",
-        "topic": "speed_test",
-        "showStatusActivities": false,
-        "logIOActivities": false,
-        "showErrors": false,
-        "showWarnings": true,
-        "unitid": "1",
-        "dataType": "HoldingRegister",
-        "adr": "42",
-        "quantity": "2",
-        "rate": "1000",
-        "rateUnit": "ms",
-        "delayOnStart": false,
-        "enableDeformedMessages": false,
-        "startDelayTime": "",
-        "server": "f8cf27b21adb353a",
-        "useIOFile": false,
-        "ioFile": "",
-        "useIOForPayload": false,
-        "emptyMsgOnFail": false,
-        "x": 130,
-        "y": 400,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
         "id": "9c303d5686a0dce7",
         "type": "function",
         "z": "ea087883fe7f4ebf",
@@ -309,30 +261,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 420,
+        "x": 300,
+        "y": 400,
         "wires": [
             [
                 "439602c0c7fecae6"
             ]
         ]
-    },
-    {
-        "id": "0b94b07a53f1f1b2",
-        "type": "debug",
-        "z": "ea087883fe7f4ebf",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 760,
-        "y": 300,
-        "wires": []
     },
     {
         "id": "9551cf223b3959e7",
@@ -358,8 +293,8 @@
         "ioFile": "",
         "useIOForPayload": false,
         "emptyMsgOnFail": false,
-        "x": 130,
-        "y": 500,
+        "x": 90,
+        "y": 400,
         "wires": [
             [
                 "9c303d5686a0dce7"
@@ -381,8 +316,8 @@
         "correl": "",
         "expiry": "",
         "broker": "19783d821ba97b87",
-        "x": 740,
-        "y": 420,
+        "x": 600,
+        "y": 400,
         "wires": []
     },
     {
@@ -474,19 +409,18 @@
         "type": "function",
         "z": "5cd55ca858fd3527",
         "name": "function 3",
-        "func": "\nconst topicMap = {\n    \"factory/conveyor/01/commands/start\": 0,\n    \"factory/conveyor/01/commands/stop\": 1,\n    \"factory/conveyor/01/sensors/entry\": 4,\n    \"factory/conveyor/01/sensors/exit\": 5\n};\n\nconst address = topicMap[msg.topic];\n\nif (address === undefined) {\n    return null;\n}\n\nconst value = typeof msg.payload === \"string\"\n    ? msg.payload.toLowerCase() === \"true\"\n    : Boolean(msg.payload);\n\nmsg.payload = {\n    value: value,\n    fc: 5,\n    unitid: 1,\n    address: address,\n    quantity: 1\n};\n\nreturn msg;\n",
+        "func": "\nconst topicMap = {\n    \"factory/conveyor/01/commands/start\": 0,\n    \"factory/conveyor/01/commands/stop\": 1,\n    \"factory/conveyor/01/sensors/entry\": 4,\n    \"factory/conveyor/01/sensors/exit\": 5\n};\n\nconst address = topicMap[msg.topic];\n\nif (address === undefined) {\n    return null;\n}\n\nconst value = typeof msg.payload === \"string\"\n    ? msg.payload.toLowerCase() === \"true\"\n    : Boolean(msg.payload);\n\nmsg.payload = {\n    value: value,\n    fc: 5,\n    unitid: 1,\n    address: address,\n    quantity: 1\n};\nnode.warn(`Topic=${msg.topic}, address=${address}, value=${value}`);\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 600,
-        "y": 320,
+        "x": 520,
+        "y": 300,
         "wires": [
             [
-                "8ddbce567cbed224",
-                "725e17611b3609c0"
+                "8ddbce567cbed224"
             ]
         ]
     },
@@ -503,8 +437,8 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 850,
-        "y": 280,
+        "x": 690,
+        "y": 400,
         "wires": [
             [],
             []
@@ -523,83 +457,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
-        "y": 660,
+        "x": 170,
+        "y": 480,
         "wires": [
             [
                 "539caa671566b953"
             ]
-        ]
-    },
-    {
-        "id": "725e17611b3609c0",
-        "type": "debug",
-        "z": "5cd55ca858fd3527",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "d1d98a5e308e6337",
-        "type": "inject",
-        "z": "5cd55ca858fd3527",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "factory/conveyor/01/commands/start",
-        "payload": "true",
-        "payloadType": "str",
-        "x": 170,
-        "y": 520,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "fcd1c750907bc345",
-        "type": "inject",
-        "z": "5cd55ca858fd3527",
-        "name": "stop",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "factory/conveyor/01/commands/stop",
-        "payload": "true",
-        "payloadType": "str",
-        "x": 130,
-        "y": 580,
-        "wires": [
-            []
         ]
     },
     {
@@ -614,8 +477,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
-        "y": 660,
+        "x": 430,
+        "y": 480,
         "wires": [
             [
                 "096372cbccc55196"
@@ -635,8 +498,69 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 760,
-        "y": 660,
+        "x": 680,
+        "y": 480,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8ce3390366f9bbc3",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "Telemetry",
+        "topic": "factory/conveyor/01/telemetry/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 560,
+        "wires": [
+            [
+                "19d468e66a877371"
+            ]
+        ]
+    },
+    {
+        "id": "19d468e66a877371",
+        "type": "function",
+        "z": "5cd55ca858fd3527",
+        "name": "function 4",
+        "func": "const topic = msg.topic;\nconst value = Number(msg.payload);\n\nif (!Number.isFinite(value)) {\n    node.warn(`Invalid numeric payload: ${msg.payload}`);\n        return null;\n        }\n\n        // OpenPLC %MD addresses mapped to Modbus holding-register offsets.\n        // Each REAL occupies two consecutive 16-bit registers.\n        const addressMap = {\n            // Scalar REAL variables\n                load: {\n                        variable: \"ConveyorLoad\",\n                                address: 74\n                                    },\n                                        motorCurrent: {\n                                                variable: \"MotorCurrent\",\n                                                        address: 66\n                                                            },\n\n                                                                // Bearing temperature array: BearingTemperature[1..4]\n                                                                    \"ROLLER-1/BEARING-1/temperature\": {\n                                                                            variable: \"BearingTemperature\",\n                                                                                    index: 1,\n                                                                                            address: 2\n                                                                                                },\n                                                                                                    \"ROLLER-1/BEARING-2/temperature\": {\n                                                                                                            variable: \"BearingTemperature\",\n                                                                                                                    index: 2,\n                                                                                                                            address: 4\n                                                                                                                                },\n                                                                                                                                    \"ROLLER-2/BEARING-1/temperature\": {\n                                                                                                                                            variable: \"BearingTemperature\",\n                                                                                                                                                    index: 3,\n                                                                                                                                                            address: 6\n                                                                                                                                                                },\n                                                                                                                                                                    \"ROLLER-2/BEARING-2/temperature\": {\n                                                                                                                                                                            variable: \"BearingTemperature\",\n                                                                                                                                                                                    index: 4,\n                                                                                                                                                                                            address: 8\n                                                                                                                                                                                                },\n\n                                                                                                                                                                                                    // Bearing vibration array: BearingVibration[1..4]\n                                                                                                                                                                                                        \"ROLLER-1/BEARING-1/vibration\": {\n                                                                                                                                                                                                                variable: \"BearingVibration\",\n                                                                                                                                                                                                                        index: 1,\n                                                                                                                                                                                                                                address: 18\n                                                                                                                                                                                                                                    },\n                                                                                                                                                                                                                                        \"ROLLER-1/BEARING-2/vibration\": {\n                                                                                                                                                                                                                                                variable: \"BearingVibration\",\n                                                                                                                                                                                                                                                        index: 2,\n                                                                                                                                                                                                                                                                address: 20\n                                                                                                                                                                                                                                                                    },\n                                                                                                                                                                                                                                                                        \"ROLLER-2/BEARING-1/vibration\": {\n                                                                                                                                                                                                                                                                                variable: \"BearingVibration\",\n                                                                                                                                                                                                                                                                                        index: 3,\n                                                                                                                                                                                                                                                                                                address: 22\n                                                                                                                                                                                                                                                                                                    },\n                                                                                                                                                                                                                                                                                                        \"ROLLER-2/BEARING-2/vibration\": {\n                                                                                                                                                                                                                                                                                                                variable: \"BearingVibration\",\n                                                                                                                                                                                                                                                                                                                        index: 4,\n                                                                                                                                                                                                                                                                                                                                address: 24\n                                                                                                                                                                                                                                                                                                                                    }\n                                                                                                                                                                                                                                                                                                                                    };\n\n                                                                                                                                                                                                                                                                                                                                    // Resolve the MQTT topic to a PLC variable and register address.\n                                                                                                                                                                                                                                                                                                                                    let mapping = null;\n\n                                                                                                                                                                                                                                                                                                                                    if (topic.endsWith(\"/load\")) {\n                                                                                                                                                                                                                                                                                                                                        mapping = addressMap.load;\n                                                                                                                                                                                                                                                                                                                                        } else if (topic.endsWith(\"/motorCurrent\")) {\n                                                                                                                                                                                                                                                                                                                                            mapping = addressMap.motorCurrent;\n                                                                                                                                                                                                                                                                                                                                            } else {\n                                                                                                                                                                                                                                                                                                                                                for (const [suffix, config] of Object.entries(addressMap)) {\n                                                                                                                                                                                                                                                                                                                                                        if (\n                                                                                                                                                                                                                                                                                                                                                                    suffix.includes(\"/\") &&\n                                                                                                                                                                                                                                                                                                                                                                                topic.endsWith(\"/telemetry/\" + suffix)\n                                                                                                                                                                                                                                                                                                                                                                                        ) {\n                                                                                                                                                                                                                                                                                                                                                                                                    mapping = config;\n                                                                                                                                                                                                                                                                                                                                                                                                                break;\n                                                                                                                                                                                                                                                                                                                                                                                                                        }\n                                                                                                                                                                                                                                                                                                                                                                                                                            }\n                                                                                                                                                                                                                                                                                                                                                                                                                            }\n\n                                                                                                                                                                                                                                                                                                                                                                                                                            if (!mapping) {\n                                                                                                                                                                                                                                                                                                                                                                                                                                node.warn(`Unrecognized telemetry topic: ${topic}`);\n                                                                                                                                                                                                                                                                                                                                                                                                                                    return null;\n                                                                                                                                                                                                                                                                                                                                                                                                                                    }\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                    // Encode the REAL value as two 16-bit words.\n                                                                                                                                                                                                                                                                                                                                                                                                                                    // High word first; reverse the order if your PLC mapping requires it.\n                                                                                                                                                                                                                                                                                                                                                                                                                                    const buffer = Buffer.alloc(4);\n                                                                                                                                                                                                                                                                                                                                                                                                                                    buffer.writeFloatBE(value, 0);\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                    const highWord = buffer.readUInt16BE(0);\n                                                                                                                                                                                                                                                                                                                                                                                                                                    const lowWord = buffer.readUInt16BE(2);\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                    // Keep metadata available for debugging.\n                                                                                                                                                                                                                                                                                                                                                                                                                                    msg.plcVariable = mapping.variable;\n                                                                                                                                                                                                                                                                                                                                                                                                                                    msg.arrayIndex = mapping.index ?? null;\n                                                                                                                                                                                                                                                                                                                                                                                                                                    msg.value = value;\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                    // Modbus Flex Write request: FC16, write two holding registers.\n                                                                                                                                                                                                                                                                                                                                                                                                                                    msg.payload = {\n                                                                                                                                                                                                                                                                                                                                                                                                                                        fc: 16,\n                                                                                                                                                                                                                                                                                                                                                                                                                                            unitid: 1,\n                                                                                                                                                                                                                                                                                                                                                                                                                                                address: mapping.address,\n                                                                                                                                                                                                                                                                                                                                                                                                                                                    quantity: 2,\n                                                                                                                                                                                                                                                                                                                                                                                                                                                        value: [highWord, lowWord]\n                                                                                                                                                                                                                                                                                                                                                                                                                                                        };\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                                        return msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 560,
+        "wires": [
+            [
+                "f22db7a2e95f8e35"
+            ]
+        ]
+    },
+    {
+        "id": "f22db7a2e95f8e35",
+        "type": "modbus-flex-write",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "server": "f8cf27b21adb353a",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 690,
+        "y": 560,
         "wires": [
             [],
             []
