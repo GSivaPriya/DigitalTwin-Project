@@ -11,6 +11,7 @@ public class MQTTSubscriber : MonoBehaviour
 
     private const string StatusTopic = "factory/conveyor/01/status";
     private const string CommandedSpeedTopic = "factory/conveyor/01/commandedSpeed";
+    private const string ScadaSnapShot = "factory/conveyor/01/scada_snapshot";
 
     [System.Serializable]
     public class MachineStatus
@@ -20,6 +21,7 @@ public class MQTTSubscriber : MonoBehaviour
     }
 
     public MachineStatus CurrentStatus{get;private set;}
+    public ScadaSnapshot snapShot {get; private set;}
     public float CommandedConveyorSpeed;
 
     public Action<float> OnCommandedSpeedChange;
@@ -47,6 +49,11 @@ public class MQTTSubscriber : MonoBehaviour
         await mqttClient.Client.SubscribeAsync(
             new MqttTopicFilterBuilder()
             .WithTopic(CommandedSpeedTopic)
+            .Build());
+
+        await mqttClient.Client.SubscribeAsync(
+            new MqttTopicFilterBuilder()
+            .WithTopic(ScadaSnapShot)
             .Build());
     }
 
@@ -76,6 +83,12 @@ public class MQTTSubscriber : MonoBehaviour
                 Debug.Log("Subscriber received commanded speed");
                 OnCommandedSpeedChange.Invoke(CommandedConveyorSpeed);
             } 
+        }
+        else if (topic==ScadaSnapShot)
+        {
+            snapShot = JsonUtility.FromJson<ScadaSnapshot>(payload);
+            Debug.Log("scada_snapshot!");
+            Debug.Log(snapShot);
         }
         return Task.CompletedTask;
         
