@@ -12,11 +12,13 @@ public class BearingSimulation : MonoBehaviour
     [Header("Identification")]
     [SerializeField] private string bearingID = "BEARING-1";
     RollerIdentity rollerID;
+    public string fullerID;
     public string BearingID => bearingID;
 
     public void FullBearingID()
     {
         rollerID = GetComponentInParent<RollerIdentity>();
+        fullerID = rollerID.RollerID+bearingID;
     }
 
     [Header("Hidden internal state")]

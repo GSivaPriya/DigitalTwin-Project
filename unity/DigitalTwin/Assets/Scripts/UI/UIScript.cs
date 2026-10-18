@@ -15,6 +15,7 @@ public class UIScript : MonoBehaviour
         {
             motorRunning.text="Motor Running: "+mqttSubscriber.CurrentStatus.machineRunning.ToString();
             boxCount.text = "Box Count: "+mqttSubscriber.CurrentStatus.boxCount.ToString();
+            //Debug.Log(mqttSubscriber.snapShot);
         }
     }
 }
