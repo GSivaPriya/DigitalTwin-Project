@@ -2,7 +2,7 @@
     {
         "id": "ea087883fe7f4ebf",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Modbus TCP - MQTT",
         "disabled": false,
         "info": "",
         "env": []
@@ -10,7 +10,15 @@
     {
         "id": "5cd55ca858fd3527",
         "type": "tab",
-        "label": "Flow 2",
+        "label": "MQTT - Modbus TCP",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4802c977c1960872",
+        "type": "tab",
+        "label": "OPC UA - MQTT",
         "disabled": false,
         "info": "",
         "env": []
@@ -77,6 +85,19 @@
         "sessionExpiry": ""
     },
     {
+        "id": "cf20837ba0d7574a",
+        "type": "OpcUa-Endpoint",
+        "name": "Ignition OPC-UA",
+        "endpoint": "opc.tcp://localhost:62541",
+        "secpol": "Basic256Sha256",
+        "secmode": "SignAndEncrypt",
+        "none": true,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "",
+        "userprivatekey": ""
+    },
+    {
         "id": "141c9e295043c3dc",
         "type": "modbus-read",
         "z": "ea087883fe7f4ebf",
@@ -123,7 +144,7 @@
         "correl": "",
         "expiry": "",
         "broker": "19783d821ba97b87",
-        "x": 770,
+        "x": 650,
         "y": 320,
         "wires": []
     },
@@ -261,7 +282,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
+        "x": 340,
         "y": 400,
         "wires": [
             [
@@ -293,7 +314,7 @@
         "ioFile": "",
         "useIOForPayload": false,
         "emptyMsgOnFail": false,
-        "x": 90,
+        "x": 130,
         "y": 400,
         "wires": [
             [
@@ -565,5 +586,169 @@
             [],
             []
         ]
+    },
+    {
+        "id": "5e701feb130e32c6",
+        "type": "OpcUa-Client",
+        "z": "4802c977c1960872",
+        "endpoint": "cf20837ba0d7574a",
+        "action": "subscribe",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": "1",
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "useTransport": false,
+        "maxChunkCount": 1,
+        "maxMessageSize": 8192,
+        "receiveBufferSize": 8192,
+        "sendBufferSize": 8192,
+        "setstatusandtime": false,
+        "keepsessionalive": true,
+        "name": "",
+        "applicationName": "",
+        "applicationUri": "",
+        "x": 400,
+        "y": 80,
+        "wires": [
+            [
+                "d9f028e7b8add064"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "746d5375a01b7e00",
+        "type": "inject",
+        "z": "4802c977c1960872",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "5cd4ea1443d6f164"
+            ]
+        ]
+    },
+    {
+        "id": "d9f028e7b8add064",
+        "type": "function",
+        "z": "4802c977c1960872",
+        "name": "function 5",
+        "func": "\nconst prefix = \"ns=2;s=[default]/\";\n\n// Map each OPC UA tag to its JSON destination.\nconst tagMap = {\n    commandedSpeed: [\"conveyor\", \"commandedSpeed\"],\n    conveyorLoad: [\"conveyor\", \"conveyorLoad\"],\n    isMotorRunning: [\"conveyor\", \"isMotorRunning\"],\n    motorCurrent: [\"conveyor\", \"motorCurrent\"],\n\n    roller_1_bearing_1_temp: [\"bearings\", \"roller_1_bearing_1\", \"temperature\"],\n    roller_1_bearing_1_vibration: [\"bearings\", \"roller_1_bearing_1\", \"vibration\"],\n    roller_1_bearing_2_temp: [\"bearings\", \"roller_1_bearing_2\", \"temperature\"],\n    roller_1_bearing_2_vibration: [\"bearings\", \"roller_1_bearing_2\", \"vibration\"],\n\n    roller_2_bearing_1_temp: [\"bearings\", \"roller_2_bearing_1\", \"temperature\"],\n    roller_2_bearing_1_vibration: [\"bearings\", \"roller_2_bearing_1\", \"vibration\"],\n    roller_2_bearing_2_temp: [\"bearings\", \"roller_2_bearing_2\", \"temperature\"],\n    roller_2_bearing_2_vibration: [\"bearings\", \"roller_2_bearing_2\", \"vibration\"]\n};\n\nlet values = flow.get(\"conveyorTagValues\") || {};\n\n// OPC UA update: extract and store the latest value.\nif (typeof msg.topic === \"string\" && msg.topic.startsWith(prefix)) {\n    const tagName = msg.topic.slice(prefix.length);\n\n    if (tagMap[tagName]) {\n        values[tagName] = msg.payload.value.value;\n        flow.set(\"conveyorTagValues\", values);\n    }\n\n    return null;\n}\n\n// Snapshot trigger: emit a complete JSON object every second.\nif (msg.topic !== \"build_timestamp\") {\n    return null;\n}\n\nconst snapshot = {\n    timestamp: new Date().toISOString(),\n    conveyor: {},\n    bearings: {\n        roller_1_bearing_1: {},\n        roller_1_bearing_2: {},\n        roller_2_bearing_1: {},\n        roller_2_bearing_2: {}\n    }\n};\n\nfor (const [tagName, path] of Object.entries(tagMap)) {\n    if (!(tagName in values)) continue;\n\n    let target = snapshot;\n    for (let i = 0; i < path.length - 1; i++) {\n        target = target[path[i]];\n    }\n\n    target[path[path.length - 1]] = values[tagName];\n}\n\nmsg.topic = \"factory/conveyor/01/scada_snapshot\";\nmsg.payload = snapshot;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 200,
+        "wires": [
+            [
+                "e8282970297330b3",
+                "afbcd51070718cf5"
+            ]
+        ]
+    },
+    {
+        "id": "0e199409d357bbca",
+        "type": "inject",
+        "z": "4802c977c1960872",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "build_timestamp",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 300,
+        "wires": [
+            [
+                "d9f028e7b8add064"
+            ]
+        ]
+    },
+    {
+        "id": "5cd4ea1443d6f164",
+        "type": "function",
+        "z": "4802c977c1960872",
+        "name": "Subscribe to tags",
+        "func": "\nmsg.topic = \"multiple\";\nmsg.action = \"subscribe\";\n\nmsg.payload = [\n    { nodeId: \"ns=2;s=[default]/commandedSpeed\" },\n    { nodeId: \"ns=2;s=[default]/conveyorLoad\" },\n    { nodeId: \"ns=2;s=[default]/isMotorRunning\" },\n    { nodeId: \"ns=2;s=[default]/motorCurrent\" },\n\n    { nodeId: \"ns=2;s=[default]/roller_1_bearing_1_temp\" },\n    { nodeId: \"ns=2;s=[default]/roller_1_bearing_1_vibration\" },\n    { nodeId: \"ns=2;s=[default]/roller_1_bearing_2_temp\" },\n    { nodeId: \"ns=2;s=[default]/roller_1_bearing_2_vibration\" },\n\n    { nodeId: \"ns=2;s=[default]/roller_2_bearing_1_temp\" },\n    { nodeId: \"ns=2;s=[default]/roller_2_bearing_1_vibration\" },\n    { nodeId: \"ns=2;s=[default]/roller_2_bearing_2_temp\" },\n    { nodeId: \"ns=2;s=[default]/roller_2_bearing_2_vibration\" }\n];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 200,
+        "wires": [
+            [
+                "5e701feb130e32c6"
+            ]
+        ]
+    },
+    {
+        "id": "e8282970297330b3",
+        "type": "mqtt out",
+        "z": "4802c977c1960872",
+        "name": "",
+        "topic": "factory/conveyor/01/scada_snapshot",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "19783d821ba97b87",
+        "x": 710,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "afbcd51070718cf5",
+        "type": "debug",
+        "z": "4802c977c1960872",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 200,
+        "wires": []
     }
 ]
