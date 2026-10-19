@@ -109,3 +109,27 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+
+# Python virtual environments
+/ml/.venv/
+
+
+
+# Python virtual environments
+/ml/.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Large local historian datasets
+/ml/conveyor_historian_raw*
+/ml/conveyor_historian_export*
+
+# Local training checkpoint
+/ml/best_lstm_autoencoder.keras
+/ml/EDA_Visualization
