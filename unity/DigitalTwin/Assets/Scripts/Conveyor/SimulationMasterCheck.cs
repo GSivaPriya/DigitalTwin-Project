@@ -35,7 +35,7 @@ public class SimulationMasterCheck : MonoBehaviour
 
     [Header("Sampling")]
     [Min(0.1f)]
-    [SerializeField] private float samplingIntervalSeconds = 1f;
+    [SerializeField] private float samplingIntervalSeconds = 0.25f;
 
     [Min(0)]
     [SerializeField] private int targetSamples;
@@ -150,8 +150,8 @@ public class SimulationMasterCheck : MonoBehaviour
 
     private void Start()
     {
-        if (telemetry != null)
-            telemetry.SetSamplingInterval(samplingIntervalSeconds);
+        // if (telemetry != null)
+        //     telemetry.SetSamplingInterval(samplingIntervalSeconds);
 
         if (startAutomatically)
             StartDataCollection();
@@ -159,6 +159,9 @@ public class SimulationMasterCheck : MonoBehaviour
 
     public void StartDataCollection()
     {
+        Debug.Log("START BUTTON: StartDataCollection() was called.", this);
+
+        
         if (sequenceRunning)
         {
             Debug.LogWarning("SimulationMaster: sequence is already running.", this);
@@ -183,7 +186,11 @@ public class SimulationMasterCheck : MonoBehaviour
         if (sequence != null)
             StopCoroutine(sequence);
 
+        if (telemetry != null)
+        telemetry.SetSamplingInterval(samplingIntervalSeconds);
+
         sequence = StartCoroutine(RunScenarios());
+        Debug.Log($"sequence coroutine start {sequence}");
     }
 
     public void StopDataCollection()
