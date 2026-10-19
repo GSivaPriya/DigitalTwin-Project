@@ -64,10 +64,10 @@ The system is intended as **maintenance decision support**, not direct AI contro
 | **Mosquitto MQTT 2.1.2** | Implemented | MQTT broker |
 | **MQTT** | Implemented | Unity ↔ Node-RED messaging |
 | **Modbus TCP** | Implemented | Node-RED ↔ OpenPLC communication |
-| **Python** | In-progress | Data processing and ML pipeline |
-| **SCADA / Historian** | In-progress | Machine monitoring and historical telemetry |
-| **Machine Learning** | In-progress | Condition monitoring and anomaly detection |
-| **Unity Sentis** | Planned | Runtime ML inference inside Unity |
+| **Python** | Implemented | Data processing and ML pipeline |
+| **SCADA / Historian** | Implemented | Machine monitoring and historical telemetry |
+| **Machine Learning** | Implemented | Condition monitoring and anomaly detection |
+| **Unity Sentis** | In-Progress | Runtime ML inference inside Unity |
 | **ChromaDB** | Planned | Vector database for RAG |
 | **LLM** | Planned | Contextual reasoning over machine data and documentation |
 | **Agent framework** | Planned | Agentic investigation and workflow orchestration |
