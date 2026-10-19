@@ -1,0 +1,22 @@
+{
+    "model_file": "lstm_autoencoder.onnx",
+    "scaler_file": "standard_scaler.joblib",
+    "features": [
+        "commandedSpeed",
+        "conveyorLoad",
+        "motorCurrent",
+        "temp",
+        "vibration"
+    ],
+    "window_size": 30,
+    "feature_count": 5,
+    "anomaly_threshold": 0.499913,
+    "threshold_method": "99th percentile of validation reconstruction errors",
+    "reconstruction_error": "mean squared error across all timesteps and features",
+    "input_dtype": "float32",
+    "input_shape": [
+        null,
+        30,
+        5
+    ]
+}
