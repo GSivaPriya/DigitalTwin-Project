@@ -133,3 +133,6 @@ __pycache__/
 # Local training checkpoint
 /ml/best_lstm_autoencoder.keras
 /ml/EDA_Visualization
+/ml/Datasets
+/ml/data_inspection_report.txt
+/ml/conveyor_telemetry_ml.ipynb
