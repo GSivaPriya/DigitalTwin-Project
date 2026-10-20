@@ -1,0 +1,26 @@
+{
+    "features": [
+        "commandedSpeed",
+        "conveyorLoad",
+        "motorCurrent",
+        "temp",
+        "vibration"
+    ],
+    "feature_count": 5,
+    "means": [
+        0.4896537741143859,
+        13.692684065300677,
+        0.7321081179903344,
+        35.532766742883126,
+        0.8855912467641114
+    ],
+    "scales": [
+        0.1982732401963367,
+        6.967250527513654,
+        0.2347176044698004,
+        2.0318991894901615,
+        0.30570866471898106
+    ],
+    "formula": "scaled_value = (raw_value - mean) / scale",
+    "dtype": "float32"
+}

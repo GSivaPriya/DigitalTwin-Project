@@ -1,6 +1,9 @@
 {
     "model_file": "lstm_autoencoder.onnx",
+    "keras_model_file": "lstm_autoencoder.keras",
+    "weights_file": "lstm_autoencoder.weights.h5",
     "scaler_file": "standard_scaler.joblib",
+    "scaler_parameters_file": "scaler_parameters.json",
     "features": [
         "commandedSpeed",
         "conveyorLoad",
@@ -8,15 +11,48 @@
         "temp",
         "vibration"
     ],
-    "window_size": 30,
     "feature_count": 5,
-    "anomaly_threshold": 0.499913,
-    "threshold_method": "99th percentile of validation reconstruction errors",
-    "reconstruction_error": "mean squared error across all timesteps and features",
-    "input_dtype": "float32",
+    "window_size": 30,
     "input_shape": [
         null,
         30,
         5
-    ]
+    ],
+    "input_dtype": "float32",
+    "anomaly_threshold": 0.10427506268024445,
+    "threshold_percentile": 99.0,
+    "threshold_method": "99th percentile of validation reconstruction errors",
+    "reconstruction_error": "mean squared error across all timesteps and features",
+    "scenario_count": 7,
+    "scenario_detection": "timestamp-level isMotorRunning transition 0->1",
+    "phase_mapping": {
+        "isMotorRunning=1": "running",
+        "isMotorRunning=0 after first scenario start": "cooling"
+    },
+    "split": {
+        "method": "chronological within scenario_id + phase + bearingID",
+        "train": 0.7,
+        "validation": 0.15,
+        "test": 0.15
+    },
+    "training_rows": 69436,
+    "validation_rows": 14864,
+    "test_rows": 14928,
+    "training_feature_min": {
+        "commandedSpeed": 0.0,
+        "conveyorLoad": -6.24656677246e-05,
+        "motorCurrent": 0.0,
+        "temp": 24.4678707123,
+        "vibration": 0.0
+    },
+    "training_feature_max": {
+        "commandedSpeed": 0.75,
+        "conveyorLoad": 25.809469223,
+        "motorCurrent": 1.08219301701,
+        "temp": 38.7458610535,
+        "vibration": 1.69841599464
+    },
+    "note": "Validation reconstruction errors set the threshold. Flags indicate unusual patterns, not confirmed physical faults.",
+    "onnx_max_abs_difference": 1.430511474609375e-06,
+    "onnx_validation_passed": true
 }
