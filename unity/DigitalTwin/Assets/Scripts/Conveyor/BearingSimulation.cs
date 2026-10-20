@@ -11,6 +11,7 @@ public class BearingSimulation : MonoBehaviour
 {
     [Header("Identification")]
     [SerializeField] private string bearingID = "BEARING-1";
+    [SerializeField] public bool isFaultInjectionEnabled=false;
     RollerIdentity rollerID;
     public string fullerID;
     public string BearingID => bearingID;
@@ -19,6 +20,11 @@ public class BearingSimulation : MonoBehaviour
     {
         rollerID = GetComponentInParent<RollerIdentity>();
         fullerID = rollerID.RollerID+bearingID;
+    }
+
+    public void SetFaultInjected(bool isOn)
+    {
+        isFaultInjectionEnabled = isOn;
     }
 
     [Header("Hidden internal state")]
@@ -85,15 +91,25 @@ public class BearingSimulation : MonoBehaviour
 
         VibrationMmS = vibrationModel.CalculateVibration(
             loadRatio, normalizedSpeed, isRunning, hiddenCondition, hiddenLubrication);
-        Debug.Log($"Temp: {TemperatureC}, Vib: {VibrationMmS}");
 
-        PublishTelemetry();
+
+        if(!isFaultInjectionEnabled)
+        {
+            PublishTelemetry(TemperatureC, VibrationMmS);
+        }
+        else
+        {
+            float faultMultiplier = Random.Range(1.5f, 3f);
+            VibrationMmS *= faultMultiplier;
+            PublishTelemetry(TemperatureC, VibrationMmS);
+        }
+        
     }
 
-    void PublishTelemetry()
+    void PublishTelemetry(float temp, float vibration)
     {
-        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/temperature",TemperatureC);
-        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/vibration",VibrationMmS);
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/temperature", temp);
+        _= mqttPublisher.PublishCommands($"factory/conveyor/01/telemetry/{rollerID.RollerID}/{bearingID}/vibration", vibration);
     }
 
     // Internal model coupling only; do not publish as a sensor or ML feature.

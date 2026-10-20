@@ -10,6 +10,7 @@ public class TelemetryStatusUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI conveyorLoad;
     [SerializeField] private TextMeshProUGUI conveyorSpeed;
     [SerializeField] private TextMeshProUGUI motorCurrent;
+    [SerializeField] private TextMeshProUGUI boxCount;
     [SerializeField] private TextMeshProUGUI roller1bearing1Temp;
     [SerializeField] private TextMeshProUGUI roller1bearing2Temp;
     [SerializeField] private TextMeshProUGUI roller2bearing1Temp;
@@ -36,7 +37,7 @@ public class TelemetryStatusUI : MonoBehaviour
 
     private void UpdateConveyorTelemetry()
     {
-        if (mqttSubscriber == null || mqttSubscriber.snapShot == null)
+        if (mqttSubscriber == null || mqttSubscriber.snapShot == null || mqttSubscriber.CurrentStatus==null)
             return;
 
         if (mqttSubscriber.snapShot.conveyor == null)
@@ -46,9 +47,10 @@ public class TelemetryStatusUI : MonoBehaviour
         var bearings = mqttSubscriber.snapShot.bearings;
 
         isMotorRunning.text = $"Motor Running: {conveyor.isMotorRunning}";
-        conveyorLoad.text = $"Conveyor Load: {conveyor.conveyorLoad}";
-        conveyorSpeed.text = $"Conveyor Speed: {conveyor.commandedSpeed}";
-        motorCurrent.text = $"Motor Current: {conveyor.motorCurrent}";
+        conveyorLoad.text = $"Conveyor Load -kg: {conveyor.conveyorLoad}";
+        conveyorSpeed.text = $"Conveyor Speed -m/s: {conveyor.commandedSpeed}";
+        motorCurrent.text = $"Motor Current -A: {conveyor.motorCurrent}";
+        boxCount.text = $"Box Count: "+mqttSubscriber.CurrentStatus.boxCount.ToString();
 
         roller1bearing1Temp.text="TemperatureC: "+ bearings.roller_1_bearing_1.temperature.ToString("F2");
         roller1bearing2Temp.text=$"TemperatureC: "+bearings.roller_1_bearing_2.temperature.ToString("F2");

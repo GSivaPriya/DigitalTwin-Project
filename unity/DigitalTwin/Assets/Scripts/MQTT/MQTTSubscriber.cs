@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MQTTnet;
 using MQTTnet.Client;
 using UnityEngine;
+using System.Collections.Concurrent;
 
 public class MQTTSubscriber : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class MQTTSubscriber : MonoBehaviour
     public float CommandedConveyorSpeed;
 
     public Action<float> OnCommandedSpeedChange;
+    private readonly ConcurrentQueue<ScadaSnapshot> snapshotQueue
+    = new ConcurrentQueue<ScadaSnapshot>();
+    public Action<ScadaSnapshot> OnScadaSnapshotReceived;
 
     private async void Start()
     {
@@ -81,17 +85,27 @@ public class MQTTSubscriber : MonoBehaviour
             {
                 CommandedConveyorSpeed = speed;
                 Debug.Log("Subscriber received commanded speed");
-                OnCommandedSpeedChange.Invoke(CommandedConveyorSpeed);
+                OnCommandedSpeedChange?.Invoke(CommandedConveyorSpeed);
             } 
         }
         else if (topic==ScadaSnapShot)
         {
             snapShot = JsonUtility.FromJson<ScadaSnapshot>(payload);
             Debug.Log("scada_snapshot!");
-            Debug.Log(snapShot);
+            if (snapShot != null)
+            snapshotQueue.Enqueue(snapShot);
+            
         }
         return Task.CompletedTask;
         
+    }
+    void Update()
+    {
+        while (snapshotQueue.TryDequeue(out ScadaSnapshot snapshot))
+        {
+            Debug.Log("scada_snapshot!");
+            OnScadaSnapshotReceived?.Invoke(snapshot);
+        }
     }
 
     private void OnDestroy()

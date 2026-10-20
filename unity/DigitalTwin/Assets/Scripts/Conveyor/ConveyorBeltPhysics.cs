@@ -11,19 +11,11 @@ public class ConveyorBeltPhysics : MonoBehaviour
     HashSet<Rigidbody> boxesOnConveyor = new HashSet<Rigidbody>();
     public float ConveyorLoad {get ; private set;}
 
-    void OnEnable()
-    {
-        
-    }
-    void OnDisable()
-    {
-        
-    }
 
     void Start()
     {
-        mqttSubscriber = GameObject.FindFirstObjectByType<MQTTSubscriber>();
-        mqttPublisher =  GameObject.FindFirstObjectByType<MQTTPublisher>();
+        mqttSubscriber = FindFirstObjectByType<MQTTSubscriber>();
+        mqttPublisher = FindFirstObjectByType<MQTTPublisher>();
 
         mqttSubscriber.OnCommandedSpeedChange += ReceiveCommandedSpeed;
     }

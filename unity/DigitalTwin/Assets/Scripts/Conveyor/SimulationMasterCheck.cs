@@ -150,8 +150,6 @@ public class SimulationMasterCheck : MonoBehaviour
 
     private void Start()
     {
-        // if (telemetry != null)
-        //     telemetry.SetSamplingInterval(samplingIntervalSeconds);
 
         if (startAutomatically)
             StartDataCollection();

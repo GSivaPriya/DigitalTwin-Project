@@ -31,6 +31,7 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
     public float SamplingRate => samplingRate;
     public float ConveyorLoadKg => conveyorLoad;
     public float MotorCurrentA => motorCurrent;
+    [SerializeField] public bool isFaultInjectionEnabled=false;
 
     private void Start()
     {
@@ -44,11 +45,6 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
         bearings = list.ToArray();
 
         currentModel = new CurrentModel();
-        // telemetryData = new BearingTelemetryData
-        // {
-        //     conveyorId = conveyorID
-        // };
-        
 
         if (conveyor == null)
             Debug.LogError("ConveyorTelemetryGenerator requires ConveyorBeltPhysics on the same GameObject.", this);
@@ -60,6 +56,10 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
 
     public void SetSamplingInterval(float seconds) => samplingRate = Mathf.Max(0.1f, seconds);
     public void SetMaximumLoad(float kg) => conveyorMaxLoad = Mathf.Max(1f, kg);
+    public void SetFaultInjected(bool isOn)
+    {
+        isFaultInjectionEnabled = isOn;
+    }
 
     private IEnumerator GenerateTelemetry()
     {
@@ -87,20 +87,28 @@ public class ConveyorTelemetryGenerator : MonoBehaviour
 
             motorCurrent = currentModel.CalculateCurrent(
                 conveyorLoad, conveyorMaxLoad, normalizedSpeed, isConveyorRunning);
-                Debug.Log($"Current generated: {motorCurrent} ");
 
-            PublishTelemetry();
+            if(!isFaultInjectionEnabled)
+            {
+                PublishTelemetry(conveyorLoad, motorCurrent);
+            }
+            else
+            {
+                float faultMultiplier = Random.Range(1.5f, 3f);
+                motorCurrent *= faultMultiplier;
+                PublishTelemetry(conveyorLoad, motorCurrent);
+            }
+            
 
             sampleCount++;
 
         }
     }
 
-    void PublishTelemetry()
+    void PublishTelemetry(float load, float current)
     {
         // _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/speed",normalizedSpeed*conveyor.ConveyorSpeed);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/load",conveyorLoad);
         _ = mqttPublisher.PublishCommands("factory/conveyor/01/telemetry/motorCurrent",motorCurrent);
-        Debug.Log($"conveyorLoad {conveyorLoad}");
     }
 }

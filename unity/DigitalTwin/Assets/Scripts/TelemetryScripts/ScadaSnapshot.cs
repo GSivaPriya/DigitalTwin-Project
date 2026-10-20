@@ -31,6 +31,7 @@ public class Bearings
 [Serializable]
 public class Bearing
 {
+    public string bearingId;
     public float temperature;
     public float vibration;
 }
