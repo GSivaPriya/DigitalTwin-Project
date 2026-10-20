@@ -63,7 +63,8 @@
           "ResetAccepted",
           "MotorCurrent",
           "ConveyorLoad",
-          "TestVar"
+          "TestVar",
+          "Reset"
         ]
       }
     }

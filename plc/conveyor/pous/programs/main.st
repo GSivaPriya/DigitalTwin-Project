@@ -33,6 +33,7 @@ PROGRAM main
     MotorCurrent : REAL AT %MD32;
     ConveyorLoad : REAL AT %MD36;
     TestVar : REAL AT %MD37 := 25.5;
+    Reset : BOOL AT %MX0.2 := FALSE;
   END_VAR
 
 (*SpeedSetPoint := 0.45;
@@ -149,5 +150,21 @@ IF ExitSensor AND NOT PreviousExitSensor THEN
 END_IF;
 
 PreviousExitSensor := ExitSensor;
+
+IF Reset THEN
+    MotorRun := FALSE;
+    StartCommand := FALSE;
+    StopCommand := FALSE;
+    EntrySensor := FALSE;
+    ExitSensor := FALSE;
+    BoxCount := 0;
+
+    FOR i := 1 TO 4 DO
+        BearingTemperature[i] := 0.0;
+        BearingVibration[i] := 0.0;
+        BearingTemperatureWarning[i] := FALSE;
+        BearingVibrationWarning[i] := FALSE;
+    END_FOR;
+END_IF;
 
 END_PROGRAM
