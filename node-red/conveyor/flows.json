@@ -588,6 +588,100 @@
         ]
     },
     {
+        "id": "85a01f1b4a38ab74",
+        "type": "mqtt in",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "topic": "factory/conveyor/01/telemetry/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "19783d821ba97b87",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 80,
+        "wires": [
+            [
+                "0bc941415db1b60b"
+            ]
+        ]
+    },
+    {
+        "id": "0bc941415db1b60b",
+        "type": "function",
+        "z": "5cd55ca858fd3527",
+        "name": "watchdog/tick",
+        "func": "\nconst now = Date.now();\nconst timeoutMs = 5000;\n\n// The Inject node checks for a timeout.\nif (msg.topic === \"watchdog/tick\") {\n    const lastSeen = context.get(\"lastSeen\");\n    const resetSent = context.get(\"resetSent\") || false;\n\n    if (lastSeen === undefined) {\n        return null;\n    }\n\n    if (now - lastSeen >= timeoutMs && !resetSent) {\n        context.set(\"resetSent\", true);\n\n        node.warn(\"Unity telemetry stopped. PLC reset required.\");\n\n        return {\n            topic: \"factory/conveyor/01/commands/reset\",\n            payload: true\n        };\n    }\n\n    return null;\n}\n\n// MQTT telemetry received: update the last-seen time.\ncontext.set(\"lastSeen\", now);\ncontext.set(\"resetSent\", false);\n\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 80,
+        "wires": [
+            [
+                "4d795116e4a38c5b"
+            ]
+        ]
+    },
+    {
+        "id": "7b5d434132f033d5",
+        "type": "inject",
+        "z": "5cd55ca858fd3527",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "watchdog/tick",
+        "payload": "tick",
+        "payloadType": "str",
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "0bc941415db1b60b"
+            ]
+        ]
+    },
+    {
+        "id": "4d795116e4a38c5b",
+        "type": "modbus-write",
+        "z": "5cd55ca858fd3527",
+        "name": "ResetTelemetry",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "Coil",
+        "adr": "2",
+        "quantity": "1",
+        "server": "f8cf27b21adb353a",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 660,
+        "y": 80,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
         "id": "5e701feb130e32c6",
         "type": "OpcUa-Client",
         "z": "4802c977c1960872",
@@ -595,8 +689,8 @@
         "action": "subscribe",
         "deadbandtype": "a",
         "deadbandvalue": 1,
-        "time": "1",
-        "timeUnit": "s",
+        "time": "250",
+        "timeUnit": "ms",
         "certificate": "n",
         "localfile": "",
         "localkeyfile": "",
@@ -652,7 +746,7 @@
         "type": "function",
         "z": "4802c977c1960872",
         "name": "function 5",
-        "func": "\nconst prefix = \"ns=2;s=[default]/\";\n\n// Map each OPC UA tag to its JSON destination.\nconst tagMap = {\n    commandedSpeed: [\"conveyor\", \"commandedSpeed\"],\n    conveyorLoad: [\"conveyor\", \"conveyorLoad\"],\n    isMotorRunning: [\"conveyor\", \"isMotorRunning\"],\n    motorCurrent: [\"conveyor\", \"motorCurrent\"],\n\n    roller_1_bearing_1_temp: [\"bearings\", \"roller_1_bearing_1\", \"temperature\"],\n    roller_1_bearing_1_vibration: [\"bearings\", \"roller_1_bearing_1\", \"vibration\"],\n    roller_1_bearing_2_temp: [\"bearings\", \"roller_1_bearing_2\", \"temperature\"],\n    roller_1_bearing_2_vibration: [\"bearings\", \"roller_1_bearing_2\", \"vibration\"],\n\n    roller_2_bearing_1_temp: [\"bearings\", \"roller_2_bearing_1\", \"temperature\"],\n    roller_2_bearing_1_vibration: [\"bearings\", \"roller_2_bearing_1\", \"vibration\"],\n    roller_2_bearing_2_temp: [\"bearings\", \"roller_2_bearing_2\", \"temperature\"],\n    roller_2_bearing_2_vibration: [\"bearings\", \"roller_2_bearing_2\", \"vibration\"]\n};\n\nlet values = flow.get(\"conveyorTagValues\") || {};\n\n// OPC UA update: extract and store the latest value.\nif (typeof msg.topic === \"string\" && msg.topic.startsWith(prefix)) {\n    const tagName = msg.topic.slice(prefix.length);\n\n    if (tagMap[tagName]) {\n        values[tagName] = msg.payload.value.value;\n        flow.set(\"conveyorTagValues\", values);\n    }\n\n    return null;\n}\n\n// Snapshot trigger: emit a complete JSON object every second.\nif (msg.topic !== \"build_timestamp\") {\n    return null;\n}\n\nconst snapshot = {\n    timestamp: new Date().toISOString(),\n    conveyor: {},\n    bearings: {\n        roller_1_bearing_1: {},\n        roller_1_bearing_2: {},\n        roller_2_bearing_1: {},\n        roller_2_bearing_2: {}\n    }\n};\n\nfor (const [tagName, path] of Object.entries(tagMap)) {\n    if (!(tagName in values)) continue;\n\n    let target = snapshot;\n    for (let i = 0; i < path.length - 1; i++) {\n        target = target[path[i]];\n    }\n\n    target[path[path.length - 1]] = values[tagName];\n}\n\nmsg.topic = \"factory/conveyor/01/scada_snapshot\";\nmsg.payload = snapshot;\n\nreturn msg;\n",
+        "func": "\nconst prefix = \"ns=2;s=[default]/\";\n\n// Map each OPC UA tag to its JSON destination.\nconst tagMap = {\n    commandedSpeed: [\"conveyor\", \"commandedSpeed\"],\n    conveyorLoad: [\"conveyor\", \"conveyorLoad\"],\n    isMotorRunning: [\"conveyor\", \"isMotorRunning\"],\n    motorCurrent: [\"conveyor\", \"motorCurrent\"],\n\n    roller_1_bearing_1_temp: [\"bearings\", \"roller_1_bearing_1\", \"temperature\"],\n    roller_1_bearing_1_vibration: [\"bearings\", \"roller_1_bearing_1\", \"vibration\"],\n    roller_1_bearing_2_temp: [\"bearings\", \"roller_1_bearing_2\", \"temperature\"],\n    roller_1_bearing_2_vibration: [\"bearings\", \"roller_1_bearing_2\", \"vibration\"],\n\n    roller_2_bearing_1_temp: [\"bearings\", \"roller_2_bearing_1\", \"temperature\"],\n    roller_2_bearing_1_vibration: [\"bearings\", \"roller_2_bearing_1\", \"vibration\"],\n    roller_2_bearing_2_temp: [\"bearings\", \"roller_2_bearing_2\", \"temperature\"],\n    roller_2_bearing_2_vibration: [\"bearings\", \"roller_2_bearing_2\", \"vibration\"]\n};\n\n// Explicit bearing ID mapping.\nconst bearingIds = {\n    roller_1_bearing_1: \"ROLLER-1BEARING-1\",\n    roller_1_bearing_2: \"ROLLER-1BEARING-2\",\n    roller_2_bearing_1: \"ROLLER-2BEARING-1\",\n    roller_2_bearing_2: \"ROLLER-2BEARING-2\"\n};\n\nlet values = flow.get(\"conveyorTagValues\") || {};\n\n// OPC UA update: extract and store the latest value.\nif (typeof msg.topic === \"string\" && msg.topic.startsWith(prefix)) {\n    const tagName = msg.topic.slice(prefix.length);\n\n    if (tagMap[tagName]) {\n        values[tagName] = msg.payload.value.value;\n        flow.set(\"conveyorTagValues\", values);\n    }\n\n    return null;\n}\n\n// Snapshot trigger: emit a complete JSON object every second.\nif (msg.topic !== \"build_timestamp\") {\n    return null;\n}\n\nconst snapshot = {\n    timestamp: new Date().toISOString(),\n    conveyor: {},\n    bearings: {\n        roller_1_bearing_1: {\n            bearingId: bearingIds.roller_1_bearing_1\n        },\n        roller_1_bearing_2: {\n            bearingId: bearingIds.roller_1_bearing_2\n        },\n        roller_2_bearing_1: {\n            bearingId: bearingIds.roller_2_bearing_1\n        },\n        roller_2_bearing_2: {\n            bearingId: bearingIds.roller_2_bearing_2\n        }\n    }\n};\n\n// Populate snapshot values from the latest OPC UA readings.\nfor (const [tagName, path] of Object.entries(tagMap)) {\n    if (!(tagName in values)) continue;\n\n    let target = snapshot;\n\n    for (let i = 0; i < path.length - 1; i++) {\n        target = target[path[i]];\n    }\n\n    target[path[path.length - 1]] = values[tagName];\n}\n\nmsg.topic = \"factory/conveyor/01/scada_snapshot\";\nmsg.payload = snapshot;\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -663,8 +757,7 @@
         "y": 200,
         "wires": [
             [
-                "e8282970297330b3",
-                "afbcd51070718cf5"
+                "e8282970297330b3"
             ]
         ]
     },
@@ -682,7 +775,7 @@
                 "vt": "str"
             }
         ],
-        "repeat": "1",
+        "repeat": "0.10",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
@@ -733,22 +826,6 @@
         "broker": "19783d821ba97b87",
         "x": 710,
         "y": 300,
-        "wires": []
-    },
-    {
-        "id": "afbcd51070718cf5",
-        "type": "debug",
-        "z": "4802c977c1960872",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 840,
-        "y": 200,
         "wires": []
     }
 ]
