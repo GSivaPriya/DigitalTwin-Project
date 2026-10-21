@@ -6,6 +6,7 @@ The project combines virtual commissioning, machine condition monitoring and ano
 
 ## Project Demonstrations
 * **Phase 1 Demo (Virtual Commissioning Loop):** [Watch the 3-Minute System Overview on YouTube](https://youtu.be/_7UZAjHnPNI?si=ZMnqjSRlaXk5RJAZ)
+* **Phase 2 Demo (Condition Monioring and Anomaly Detection):** [Watch the 5-Minute Overview on Youtube](https://youtu.be/Opurv8_H5Ts)
 
 ## Project Goals
 
@@ -16,13 +17,13 @@ The project is developed in three connected phases:
 Build a functional virtual representation of the GUF-P 2000 BC conveyor in Unity and establish closed-loop communication with a PLC.
 
 **Goal:** Validate PLC control, machine behaviour, material flow, virtual sensors, and communication before introducing condition monitoring.
-* **Video Demonstration:** For a complete walkthrough of the communication loop between Unity, Node-RED, and OpenPLC, watch the [Phase 1 Virtual Commissioning Demo on YouTube](https://youtu.be/_7UZAjHnPNI?si=gbhBXgLJ2mP35yzt).
+
 
 ### Phase 2 — Condition Monitoring & Anomaly Detection
 
 Generate and collect machine operating and condition data and use machine-learning models to identify abnormal behaviour.
 
-The initial monitoring scope focuses on the **drive roller bearing**, using:
+**Goal:** The initial monitoring scope focuses on the **drive roller bearings**, using:
 
 - Bearing vibration
 - Bearing temperature
@@ -30,7 +31,6 @@ The initial monitoring scope focuses on the **drive roller bearing**, using:
 - Conveyor speed
 - Load
 - Machine state
-- Alarm/fault state
 - Box count as machine/material-flow context
 
 The ML system is intended to identify anomalous operating patterns rather than claim a confirmed component failure.
