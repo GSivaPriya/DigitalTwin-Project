@@ -60,6 +60,8 @@
 /unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa/*
 
+/unity/DigitalTwin/Assets/Samples/
+
 
 # ============================================================
 # OPENPLC
