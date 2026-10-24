@@ -51,7 +51,7 @@ public class Bearinginference : MonoBehaviour
         if(snapshot==null || snapshot.bearings==null || snapshot.conveyor==null)
         return;
 
-        Bearing bearing = FindBearing(snapshot.bearings);
+        Bearing bearing = snapshot.bearings.GetBearingById(bearingID);
 
         if(bearing==null)
         return;
@@ -113,23 +113,23 @@ public class Bearinginference : MonoBehaviour
 
     }
 
-    Bearing FindBearing(Bearings bearings)
-    {
-        Bearing[] all = new Bearing[]
-        {
-            bearings.roller_1_bearing_1,
-            bearings.roller_1_bearing_2,
-            bearings.roller_2_bearing_1,
-            bearings.roller_2_bearing_2,
-        };
+    // Bearing FindBearing(Bearings bearings)
+    // {
+    //     Bearing[] all = new Bearing[]
+    //     {
+    //         bearings.roller_1_bearing_1,
+    //         bearings.roller_1_bearing_2,
+    //         bearings.roller_2_bearing_1,
+    //         bearings.roller_2_bearing_2,
+    //     };
 
-        foreach (Bearing b in all)
-        {
-            if(b.bearingId==bearingID)
-            {
-                return b;
-            }
-        }
-        return null;
-    }
+    //     foreach (Bearing b in all)
+    //     {
+    //         if(b.bearingId==bearingID)
+    //         {
+    //             return b;
+    //         }
+    //     }
+    //     return null;
+    // }
 }
