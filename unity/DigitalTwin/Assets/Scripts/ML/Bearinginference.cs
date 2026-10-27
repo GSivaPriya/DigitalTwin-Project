@@ -7,6 +7,7 @@ public class Bearinginference : MonoBehaviour
     private string bearingID;
     private int windowSize = 30;
     private float anomalyThreshold = 0.1042751f;
+    BearingTeleUI bearingUI;
     MQTTSubscriber mqttSubscriber;
     [SerializeField] GameObject anomalyDetectedPanel;
     [SerializeField] TextMeshProUGUI anomalyDetectedText; 
@@ -24,6 +25,7 @@ public class Bearinginference : MonoBehaviour
             mqttSubscriber.OnScadaSnapshotReceived += ReceiveSnapShot;
         }
         anomalyDetectedPanel.SetActive(false);
+        bearingUI=GetComponent<BearingTeleUI>();
     }
     void OnDestroy()
     {
@@ -64,10 +66,13 @@ public class Bearinginference : MonoBehaviour
             bearing.temperature,
             bearing.vibration
         };
+
+        bearingUI.GetBearingTelemetry(bearingID,bearing.temperature,bearing.vibration);
+
         Debug.Log(
     $"Raw temperature: {bearing.temperature}, " +
     $"Raw vibration: {bearing.vibration}"
-);
+                );
 
         Debug.Log("collecting samples");
 
@@ -99,7 +104,7 @@ public class Bearinginference : MonoBehaviour
             {
                 Debug.Log($"{bearingID} | Anomaly detected! MSE: {mse}");
                 anomalyDetectedPanel.SetActive(true);
-                anomalyDetectedText.text = $"Anomaly detected in {bearingID}!\nMSE: {mse}";
+                anomalyDetectedText.text = $"Anomaly detected in {bearingID}!";
             }
             else
             {

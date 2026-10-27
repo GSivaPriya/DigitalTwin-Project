@@ -148,6 +148,10 @@ public class SimulationMasterCheck : MonoBehaviour
 
     public bool IsRunning => sequenceRunning;
 
+    //Audio Events
+    public static Action MachineStart;
+    public static Action MachineStop;
+
     private void Start()
     {
 
@@ -188,6 +192,8 @@ public class SimulationMasterCheck : MonoBehaviour
         telemetry.SetSamplingInterval(samplingIntervalSeconds);
 
         sequence = StartCoroutine(RunScenarios());
+        MachineStart?.Invoke();
+
         Debug.Log($"sequence coroutine start {sequence}");
     }
 
@@ -199,6 +205,7 @@ public class SimulationMasterCheck : MonoBehaviour
             StopCoroutine(sequence);
 
         sequence = null;
+        MachineStop?.Invoke();
 
         if (spawner != null)
             spawner.StopSpawning();
