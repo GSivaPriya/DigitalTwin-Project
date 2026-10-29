@@ -5483,6 +5483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1918640183}
   - component: {fileID: 1918640184}
+  - component: {fileID: 1918640185}
   m_Layer: 0
   m_Name: ObjectSpawner
   m_TagString: Untagged
@@ -5518,12 +5519,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawner
   mqttSubscriber: {fileID: 1967873745}
-  spawnPosition: {fileID: 27746905}
-  objectToSpawn: {fileID: 9191230482217242881, guid: d0e576a6d5b152443917326c0d7284e3, type: 3}
+  objectPooling: {fileID: 1918640185}
   time: 5
   repeatRate: 3
   minimumMassKg: 4.8
   maximumMassKg: 5.2
+--- !u!114 &1918640185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918640182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed25a79a0464974e889bb67b9df32f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::ObjectPooling
+  objToPool: {fileID: 9191230482217242881, guid: d0e576a6d5b152443917326c0d7284e3, type: 3}
+  spawnPoint: {fileID: 27746905}
 --- !u!1 &1931108894
 GameObject:
   m_ObjectHideFlags: 0
@@ -6396,7 +6410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2109301494}
   - component: {fileID: 2109301493}
-  - component: {fileID: 2109301495}
+  - component: {fileID: 2109301496}
   m_Layer: 0
   m_Name: EndPoint
   m_TagString: EndPoint
@@ -6419,7 +6433,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6434,39 +6448,25 @@ Transform:
   m_GameObject: {fileID: 2109301492}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.289, y: 0.89, z: -0.262}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.25188, y: 0.89, z: -0.42254}
+  m_LocalScale: {x: 1.4583, y: 2.3667, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!54 &2109301495
-Rigidbody:
+--- !u!114 &2109301496
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109301492}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d4f7d6830b6324099d539a60b2b14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::ObjectDestroy
+  objectPooling: {fileID: 1918640185}
 --- !u!1 &2146417985
 GameObject:
   m_ObjectHideFlags: 0
