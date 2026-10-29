@@ -60,6 +60,11 @@
 /unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /unity/DigitalTwin/[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# XR Related assets
+/unity/DigitalTwin/Assets/Samples
+/unity/DigitalTwin/Assets/_Course Library
+/unity/DigitalTwin/Assets/XRI
+
 
 # ============================================================
 # OPENPLC
