@@ -5,9 +5,8 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] MQTTSubscriber mqttSubscriber;
-    //[SerializeField] Transform spawnPosition;
-    //[SerializeField] GameObject objectToSpawn;
-    [SerializeField] ObjectPooling objectPooling;
+    [SerializeField] Transform spawnPosition;
+    [SerializeField] GameObject objectToSpawn;
     [SerializeField] float time;
     [SerializeField] float repeatRate;
     [SerializeField] float minimumMassKg = 4.8f;
@@ -51,8 +50,7 @@ public class ObjectSpawner : MonoBehaviour
     }
     void SpawnObject()
     {
-        // GameObject spawnedObject= Instantiate(objectToSpawn, spawnPosition.position, Quaternion.identity);
-        GameObject spawnedObject = objectPooling.pool.Get();
+        GameObject spawnedObject= Instantiate(objectToSpawn, spawnPosition.position, Quaternion.identity);
         spawnedObject.gameObject.GetComponent<Rigidbody>().mass = UnityEngine.Random.Range(minimumMassKg,maximumMassKg);
     }
 
